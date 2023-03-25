@@ -1,0 +1,86 @@
+<h2>Search Players</h2>
+<label>Name</label>
+<input type="text" id="search-input" name = "name" value = "<%= searchOptions.name %> ">
+<button type="submit" onclick="ajaxSearch()">Search</button>
+<br>
+<script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+<div id="allPlayers">
+    <% players.forEach(player => {%>
+        <div class="card">
+            <p>name: <%= player.name %></p>
+            <p>club: <%= player.club %></p>
+            <p>id: <%= player.id %></p>
+            <p>email: <%= player.email %></p>
+            <p>phone number: <%= player.phone %></p>
+        </div>
+    <%})%>
+    <script>
+        function ajaxSearch()
+        {var xhr = new XMLHttpRequest();
+            var input = document.getElementById("search-input");
+
+        xhr.open("GET", "/players?name=" + input.value, true);
+        
+        xhr.onload = function() {
+            var results = JSON.parse(xhr.responseText);
+            console.log(results);
+            var searchResults = document.getElementById("allPlayers");
+            document.getElementById("allPlayers").innerHTML = "";
+            results.forEach(msg => {
+            const card = document.createElement("div");
+            card.classList.add("card");
+            const name = document.createElement("p");
+            name.innerHTML = "name: " + msg.name;
+            const club = document.createElement("p");
+            club.innerHTML = "club: " + msg.club;
+            const id = document.createElement("p");
+            id.innerHTML = "id: " + msg.id;
+            const email = document.createElement("p");
+            email.innerHTML = "email: " + msg.email;
+            const phone = document.createElement("p");
+            phone.innerHTML = "phone number: " + msg.phone;
+            card.appendChild(name);
+            card.appendChild(club);
+            card.appendChild(id);
+            card.appendChild(email);
+            card.appendChild(phone);
+            const game = document.getElementById("allPlayers");
+            game.appendChild(card)
+
+            });
+        
+  // update view with results
+        } 
+        xhr.send();  
+        }
+
+        var socket = io()
+    
+    socket.on('update players', function(msg){
+        console.log(msg.name);
+        const card = document.createElement("div");
+        card.classList.add("card");
+        const name = document.createElement("p");
+        name.innerHTML = "name: " + msg.name;
+        const club = document.createElement("p");
+        club.innerHTML = "club: " + msg.club;
+        const id = document.createElement("p");
+        id.innerHTML = "id: " + msg.id;
+        const email = document.createElement("p");
+        email.innerHTML = "email: " + msg.email;
+        const phone = document.createElement("p");
+        phone.innerHTML = "phone number: " + msg.phone;
+        card.appendChild(name);
+        card.appendChild(club);
+        card.appendChild(id);
+        card.appendChild(email);
+        card.appendChild(phone);
+        const game = document.getElementById("allPlayers");
+        game.appendChild(card)
+      //document.body.innerHTML += newDiv;
+            })
+    </script>
+</div>
+
+
+

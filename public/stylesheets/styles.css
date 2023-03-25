@@ -1,0 +1,30 @@
+body {
+    font-family: sans-serif;
+    text-align: center;
+    background-color: #b7dce1
+  }
+  
+  #allPlayers {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 auto;
+    width: 80%;
+  }
+  p{
+    font-size: 10px;
+  }
+  
+  .card {
+
+    background-color: rgb(158, 252, 255);
+    border-radius: 4px;
+    color: rgb(255, 255, 255);
+    border-width: 2px;
+    border-style: solid;
+    border-color: rgb(255, 255, 255);
+    font-size: 32px;
+    margin: 10px;
+    padding: 20px;
+    width: 100px;
+    height: 130px;
+  }
