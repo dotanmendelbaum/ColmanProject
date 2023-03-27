@@ -12,7 +12,10 @@ const expressLayouts = require("express-ejs-layouts");
 const bodyParser = require("body-parser");
 
 const indexRouter = require("./routes/index");
-const usersRouter = require("./routes/players")(io);
+const playerRouter = require("./routes/players")(io);
+const loginRoute = require("./routes/users/login")(io);
+const registerRoute = require("./routes/users/register")(io);
+
 
 app.set("view engine", "ejs");
 app.set("views", __dirname + "/views");
@@ -20,6 +23,7 @@ app.set("layout", "layouts/layout");
 app.use(expressLayouts);
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 const mongoose = require("mongoose");
 mongoose.connect(process.env.DATABASE_URL, {
@@ -27,15 +31,17 @@ mongoose.connect(process.env.DATABASE_URL, {
 });
 
 io.on("connection", (socket) => {
-  console.log("a user connected");
+  console.log("a user.js connected");
 });
 
 const db = mongoose.connection;
 db.on("error", (error) => console.error(error));
-db.once("open", () => console.log("connected to databses"));
+db.once("open", () => console.log("connected to database"));
 
 app.use("/", indexRouter);
-app.use("/players", usersRouter);
+app.use("/players", playerRouter);
+app.use("/login", loginRoute);
+app.use("/register", registerRoute);
 
 server.listen(3000, () => {
   console.log("listening on *:3000");
