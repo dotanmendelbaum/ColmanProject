@@ -20,7 +20,7 @@ const playerRouter = require("./routes/players")(io);
 const loginRoute = require("./routes/users/login")(io);
 const registerRoute = require("./routes/users/register")(io);
 const flightsRoute = require("./routes/flights")(io);
-
+const ordersRoute = require("./routes/orders")(io);
 
 app.set("view engine", "ejs");
 app.set("views", __dirname + "/views");
@@ -57,6 +57,7 @@ app.use("/players", playerRouter);
 app.use("/login", loginRoute);
 app.use("/register", registerRoute);
 app.use("/flights", flightsRoute);
+app.use("/myorders", ordersRoute);
 
 server.listen(3000, () => {
   console.log("listening on *:3000");

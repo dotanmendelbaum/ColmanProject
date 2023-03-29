@@ -8,13 +8,13 @@ module.exports = (io) => {
 
 
     router.route('/')
-        .get(OrderController.getorder)
+        .get(OrderController.getPage)
         .post(OrderController.createOrder);
 
-    router.route('/:IDClient')
-        .get(ordersC.getorder)
+    /*router.route('/:IDClient')
+        .get(OrdersC.getorder)
         .put(OrdersC.updateOrderByID)
-        .delete(OrdersC.deleteorder);
+        .delete(OrdersC.deleteorder);*/
 
     return router;
 }
