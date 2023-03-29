@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+<nav class="sidebar">
+    <div class="sidebar-header">
+        <img src="logo.svg" alt="Airline Logo">
+    </div>
+    <ul class="sidebar-menu">
+        <li><a href="/flights">Flights</a></li>
+        <li><a href="#">Destinations</a></li>
+        <li><a href="#">Offers</a></li>
+        <li><a href="#">Travel Info</a></li>
+        <li><a href="#">Contact</a></li>
+    </ul>
+    <div class="sidebar-toggle">
+        <span class="icon icon-toggle"></span>
+    </div>
+</nav>
+<div class="main-content">
+    <!-- Your main content goes here -->
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const sidebarToggle = document.querySelector('.sidebar-toggle');
+        const sidebar = document.querySelector('.sidebar');
+        const mainContent = document.querySelector('.main-content');
+
+        sidebarToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('sidebar-collapsed');
+            mainContent.classList.toggle('main-content-expanded');
+            if (sidebar.classList.contains('sidebar-collapsed')) {
+                sidebar.style.width = '60px';
+                mainContent.style.marginLeft = '60px';
+            } else {
+                sidebar.style.width = '250px';
+                mainContent.style.marginLeft = '250px';
+            }
+        });
+    });
+</script>
+</body>
+</html>

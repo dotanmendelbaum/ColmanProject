@@ -11,7 +11,7 @@ module.exports = (io) => {
     router.post('/', async (req, res) => {
         console.log("body: " + req.body.admin)
         const { name, email, id, date, phone, admin, password } = req.body;
-        const isAdmin = admin.value === "on" ? true : false;
+        const isAdmin = admin
         //check if all the necessary data is given
         if(!name.length || !email.length || !password.length || !id.length || !date.length || !phone.length){
             res.json('fill all the fields');
@@ -41,12 +41,12 @@ module.exports = (io) => {
                 await newUser.save();
                 //send the user to the login page:
 
-                res.status(200).json('User created successfully');
-                res.redirect('login')
+                return res.status(200).redirect('/login');
+                //res.redirect('/login')
 
             } catch (error) {
                 console.error(error);
-                res.status(500).json('Server error');
+                return res.status(500).json('Server error');
             }
         }
     })

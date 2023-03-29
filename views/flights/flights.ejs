@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create a New Flight</title>
+</head>
+<body>
+<h1>Create a New Flight</h1>
+<form action="/flights" method="POST">
+    <%if(isAdmin){%>
+    <label for="flightID">Flight ID:</label>
+    <input type="number" id="flightID" name="flightID" required minlength="9" maxlength="9"><br>
+
+    <label for="flightDate">Flight Date:</label>
+    <input type="date" id="flightDate" name="flightDate" value="<%= new Date().toISOString().slice(0, 10) %>" required><br>
+
+    <label for="hour">Hour:</label>
+    <input type="time" id="hour" name="hour" required><br>
+
+    <label for="Gate">Gate:</label>
+    <input type="text" id="Gate" name="Gate" required><br>
+
+    <label for="Destination">Destination:</label>
+    <input type="text" id="Destination" name="Destination" required><br>
+
+    <label for="Origin">Origin:</label>
+    <input type="text" id="Origin" name="Origin" value="Israel" required><br>
+
+    <label for="flightPrice">Flight Price:</label>
+    <input type="number" id="flightPrice" name="flightPrice" required><br>
+
+    <label for="ArrivingDate">Arriving Date:</label>
+    <input type="date" id="ArrivingDate" name="ArrivingDate" value="<%= new Date().toISOString().slice(0, 10) %>" required><br>
+
+    <label for="NumberOfSeats">Number of Seats:</label>
+    <input type="number" id="NumberOfSeats" name="NumberOfSeats" required><br>
+
+    <label for="ArrivingHour">Arriving Hour:</label>
+    <input type="time" id="ArrivingHour" name="ArrivingHour" required><br>
+
+    <button type="submit" href="../">Create Flight</button>
+    <%}%>
+    <title>you are not an admin</title>
+</form>
+<script>
+    $(document).ready(function() {
+        $('#createFlightForm').submit(function(event) {
+            event.preventDefault(); // prevent default form submission behavior
+            var formData = {
+                flightID: $('#flightID').val(),
+                flightDate: $('#flightDate').val(),
+                hour: $('#hour').val(),
+                Gate: $('#Gate').val(),
+                Destination: $('#Destination').val(),
+                Origin: $('#Origin').val(),
+                flightPrice: $('#flightPrice').val(),
+                ArrivingDate: $('#ArrivingDate').val(),
+                NumberOfSeats: $('#NumberOfSeats').val(),
+                ArrivingHour: $('#ArrivingHour').val()
+            };
+
+            $.ajax({
+                type: 'POST',
+                url: '/flights/new',
+                data: formData,
+                dataType: 'json',
+                encode: true
+            })
+                .done(function(data) {
+                    $('#result').text('Flight created successfully with ID: ' + data.id);
+                })
+                .fail(function(data) {
+                    $('#result').text('Error creating flight: ' + data.responseText);
+                });
+        });
+    });
+</script>
+</body>
+</html>

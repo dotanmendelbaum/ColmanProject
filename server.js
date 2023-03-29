@@ -10,11 +10,16 @@ const io = require("socket.io")(server);
 
 const expressLayouts = require("express-ejs-layouts");
 const bodyParser = require("body-parser");
+const session = require("express-session")
+
+const {authorize} = require('./auth')
+const {checkUser} = require('./auth')
 
 const indexRouter = require("./routes/index");
 const playerRouter = require("./routes/players")(io);
 const loginRoute = require("./routes/users/login")(io);
 const registerRoute = require("./routes/users/register")(io);
+const flightsRoute = require("./routes/flights")(io);
 
 
 app.set("view engine", "ejs");
@@ -24,6 +29,15 @@ app.use(expressLayouts);
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use(session({
+  secret: 'abcdefghijk',
+  resave: false,
+  saveUninitialized: false
+}));
+
+
+//app.use(authorize)
+//app.use(checkUser)
 
 const mongoose = require("mongoose");
 mongoose.connect(process.env.DATABASE_URL, {
@@ -31,7 +45,7 @@ mongoose.connect(process.env.DATABASE_URL, {
 });
 
 io.on("connection", (socket) => {
-  console.log("a user.js connected");
+  console.log("a user connected");
 });
 
 const db = mongoose.connection;
@@ -42,6 +56,7 @@ app.use("/", indexRouter);
 app.use("/players", playerRouter);
 app.use("/login", loginRoute);
 app.use("/register", registerRoute);
+app.use("/flights", flightsRoute);
 
 server.listen(3000, () => {
   console.log("listening on *:3000");

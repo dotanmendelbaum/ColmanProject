@@ -1,41 +1,107 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register Page</title>
+<section class="vh-100 gradient-custom">
+    <div class="container py-0 h-30">
+        <div class="row justify-content-center align-items-center h-100">
+            <div class="col-12 col-lg-9 col-xl-7">
+                <div class="card shadow-2-strong card-registration" style="border-radius: 15px;">
+                    <div class="card-body p-4 p-md-5">
+                        <h3 class="mb-4 pb-2 pb-md-0 mb-md-5">Sign Up</h3>
+                        <form>
 
-    <!---<link rel="stylesheet" href="css/form.css"-->
+                            <div class="row">
+                                <div class="col-md-6 mb-4">
 
-</head>
-<body>
+                                    <div class="form-outline">
+                                        <label class="form-label" for="fullName">Full Name</label>
+                                        <input type="text" id="fullName" class="form-control form-control-lg" />
+                                    </div>
 
-<div class="alert-box">
-    <p class="alert"></p>
-</div>
+                                </div>
+                                <div class="col-md-6 mb-4">
+                                    <div class="form-outline">
+                                        <label class="form-label" for="ID">ID</label>
+                                        <input type="text" id="id" class="form-control form-control-lg" />
+                                    </div>
+                                </div>
+                            </div>
 
-<div class="form">
-    <h1 class="heading">Register</h1>
-    <input type="text" placeholder="name" autocomplete="off" class="name" required>
-    <input type="email" placeholder="email" autocomplete="off" class="email" required>
-    <input type="id" placeholder="id" autocomplete="off" class="id" required>
-    <input type="tel" placeholder="phone number" autocomplete="off" class="phone" required>
-    <input type="date" placeholder="birth date" autocomplete="off" class="date" required>
-    <div class="admin-toggle">
-        <input type="checkbox" id="admin-checkbox">
-        <label for="admin-checkbox">Admin</label>
+                            <div class="row">
+                                <div class="col-md-6 mb-4 d-flex align-items-center">
+
+                                    <div class="form-outline datepicker w-100">
+                                        <label for="birthdayDate" class="form-label">Birthday</label>
+                                        <input type="date" class="form-control form-control-lg" id="birthdayDate" />
+                                    </div>
+
+                                </div>
+                                <div class="col-md-6 mb-4">
+
+                                    <h6 class="mb-2 pb-1">I am a: </h6>
+
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="pilot"
+                                               value="option1" checked />
+                                        <label class="form-check-label" for="pilot">Pilot</label>
+                                    </div>
+
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="admin"
+                                               value="option2" />
+                                        <label class="form-check-label" for="admin">Admin</label>
+                                    </div>
+
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="client"
+                                               value="option3" />
+                                        <label class="form-check-label" for="client">Client</label>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-4 pb-2">
+
+                                    <div class="form-outline">
+                                        <label class="form-label" for="emailAddress">Email</label>
+                                        <input type="email" id="emailAddress" class="form-control form-control-lg" />
+                                    </div>
+
+                                </div>
+                                <div class="col-md-6 mb-4 pb-2">
+
+                                    <div class="form-outline">
+                                        <label class="form-label" for="phoneNumber">Phone Number</label>
+                                        <input type="tel" id="phoneNumber" class="form-control form-control-lg" />
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="row">
+
+                                    <div class="form-outline">
+                                        <label class="form-label" for="password">Password</label>
+                                        <input type="password" id="password" class="form-control form-control-lg" />
+                                    </div>
+                            </div>
+
+                            <div class="mt-4 pt-2">
+                                <input class="btn btn-primary btn-lg" type="submit" value="Submit" />
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <input type="password" placeholder="password" autocomplete="off" class="password" required>
-    <button class="submit-btn">register</button>
-    <a href="/login" class="link">already have an account ? log in here</a>
-</div>
-
+</section>
 <script>
     // form loading animation
 
-    const form = [...document.querySelector('.form').children];
+   // const form = [...document.querySelector('.form').children];
 
-    form.forEach((item, i) => {
+    /*form.forEach((item, i) => {
         setTimeout(() => {
             item.style.opacity = 1;
         }, i*100);
@@ -45,21 +111,33 @@
         if(sessionStorage.name){
             location.href = '/';
         }
-    }
+    }*/
 
     // form validation
 
-    const name = document.querySelector('.name');
-    const email = document.querySelector('.email');
-    const password = document.querySelector('.password');
-    const id = document.querySelector('.id');
-    const date = document.querySelector('.date');
-    const phone = document.querySelector('.phone');
-    const admin = document.getElementById("admin-checkbox");
-    const submitBtn = document.querySelector('.submit-btn');
+    //const name = document.querySelector('.name');
+    //const email = document.querySelector('.email');
+    //const password = document.querySelector('.password');
+    //const id = document.querySelector('.id');
+    //const date = document.querySelector('.date');
+    const name = document.getElementById("fullName");
+    const email = document.getElementById("emailAddress");
+    const password = document.getElementById("password");
+    const id = document.getElementById("id");
+    const date = document.getElementById("birthdayDate");
+    const phone = document.getElementById("phoneNumber");
+    const pilot = document.getElementById("pilot");
+    const admin = document.getElementById("admin");
+    const client = document.getElementById("client");
+    const submitBtn = document.querySelector('.btn-primary');
+
 
 
         submitBtn.addEventListener('click', () => {
+            let isAdmin = false;
+            if(admin.checked || pilot.checked) {
+                isAdmin = true
+            }
             console.log("date: " + date.value)
             fetch('/register', {
                 method: 'post',
@@ -70,7 +148,7 @@
                     id: id.value,
                     date: date.value,
                     phone: phone.value,
-                    admin: admin.value,
+                    admin: isAdmin,
                     password: password.value
                 })
             })

@@ -24,7 +24,9 @@ module.exports = (io) => {
                 });
 
                 if (existingUser) {
-                    // a user with the given email / Id / phone number already exists, return a 409 status code which indicates that there was a conflict in the data
+                    req.session.isAdmin = existingUser.admin;
+                    //set the session user to be the email
+                    req.session.user = { email };
                     return res.status(200).redirect('/')
                 }
                 else{
