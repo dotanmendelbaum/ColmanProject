@@ -12,15 +12,12 @@ const getFlights= async()=>
 {
     return await flight.find({});
 }
-const updateFlightByGate=async(flightID, Gate)=>
+const updateFlightById=async(req, res)=>
 {
-    const Flight= await findById(flightID)
-    if(!Flight)
+    const currentFlight = await getFlightById(req.params.flightID)
+    if(!currentFlight)
         return null
-    Flight.Gate= Gate
-    await Flight.save();
-    return Flight
-
+    Object.assign(currentFlight, res.body)
 
 }
 function validateFlightData(req, res, next)
@@ -57,9 +54,7 @@ function validateFlightData(req, res, next)
         return res.status(400).json('Flight price cannot be negative');
     }
 
-    // Check other criteria as needed...
-
-    // If all validation passes, return null to indicate success
+    // If all validation passes continue to the next function
     return next()
 }
 
@@ -79,5 +74,5 @@ module.exports=
         validateFlightData,
         getFlightById,
         createFlight,
-        updateFlightByGate
+        updateFlightById,
     }
