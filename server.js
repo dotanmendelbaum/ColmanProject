@@ -21,14 +21,16 @@ const loginRoute = require("./routes/users/login")(io);
 const registerRoute = require("./routes/users/register")(io);
 const flightsRoute = require("./routes/flights")(io);
 const ordersRoute = require("./routes/orders")(io);
+const adminRoute = require("./routes/adminRoutes/admin")(io)
 
 app.set("view engine", "ejs");
 app.set("views", __dirname + "/views");
-app.set("layout", "layouts/layout");
-app.use(expressLayouts);
+// app.set("layout", "layouts/layout");
+//app.use(expressLayouts);
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use(express.static(__dirname + '/views'));
 app.use(session({
   secret: 'abcdefghijk',
   resave: false,
@@ -58,6 +60,10 @@ app.use("/login", loginRoute);
 app.use("/register", registerRoute);
 app.use("/flights", flightsRoute);
 app.use("/myorders", ordersRoute);
+app.use("/admin", adminRoute)
+app.get('*', function(req, res){
+  res.render('notFound');
+});
 
 server.listen(3000, () => {
   console.log("listening on *:3000");
