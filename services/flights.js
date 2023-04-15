@@ -1,7 +1,7 @@
 const flight= require('../models/flights')
-const createFlight= async(flightID, flightDate,hour,Gate, Destination, Origin,flightPrice,ArrivingDate,NumberOfSeats, ArrivingHour)=>
+const createFlight= async(flightNumber, flightDate,hour,Gate, Destination, Origin,flightPrice,ArrivingDate,NumberOfSeats, ArrivingHour)=>
 {
-    const Flight= new flight({flightID:flightID,flightDate:flightDate,hour:hour,Gate:Gate,Destination:Destination,Origin:Origin,flightPrice:flightPrice, ArrivingDate:ArrivingDate,NumberOfSeats:NumberOfSeats,ArrivingHour:ArrivingHour  })
+    const Flight= new flight({flightNumber:flightNumber,flightDate:flightDate,hour:hour,Gate:Gate,Destination:Destination,Origin:Origin,flightPrice:flightPrice, ArrivingDate:ArrivingDate,NumberOfSeats:NumberOfSeats,ArrivingHour:ArrivingHour  })
     return await Flight.save();
 }
 const getFlightById= async(flightID)=>
@@ -15,15 +15,27 @@ const getFlights= async()=>
 const updateFlightById=async(req, res)=>
 {
     const currentFlight = await getFlightById(req.params.flightID)
+    console.log("found flight for update")
     if(!currentFlight)
         return null
-    Object.assign(currentFlight, res.body)
-
+    // Update flight object with new schema
+    currentFlight.flightNumber = req.body.flightNumber;
+    currentFlight.flightDate = req.body.flightDate;
+    currentFlight.hour = req.body.hour;
+    currentFlight.Gate = req.body.Gate;
+    currentFlight.Destination = req.body.Destination;
+    currentFlight.Origin = req.body.Origin;
+    currentFlight.flightPrice = req.body.flightPrice;
+    currentFlight.ArrivingDate = req.body.ArrivingDate;
+    currentFlight.NumberOfSeats = req.body.NumberOfSeats;
+    currentFlight.ArrivingHour = req.body.ArrivingHour;
+    currentFlight.save()
+    res.status(200)
 }
 function validateFlightData(req, res, next)
 {
     // Check that all fields are present and not empty
-    if (!req.body.flightID ||
+    if (!req.body.flightNumber ||
         !req.body.flightDate ||
         !req.body.hour ||
         !req.body.Gate ||

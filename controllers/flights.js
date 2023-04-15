@@ -6,7 +6,7 @@ const flight = require('../services/flights');
 const createFlight= async (req, res)=> {
     console.log("got request")
 
-    const newFlight= await flight.createFlight(req.body.flightID,
+    const newFlight= await flight.createFlight(req.body.flightNumber,
         req.body.flightDate,
         req.body.hour,
         req.body.Gate,
@@ -25,6 +25,7 @@ const getAllFlightsPage = async (req, res) => {
     const allFlights = await flight.getFlights();
 
     // Render the page with the list of flights
+    console.log(allFlights)
     res.render('flights/allFlights', {isAdmin: req.session.isAdmin, flights: allFlights })
 }
 const getNewFlightPage = async (req, res) => {
@@ -41,7 +42,7 @@ const getFlight= async (req, res)=> {
     res.json(newFlight)
 }
 const updateFlightById= async (req, res)=> {
-    const newFlight= await flight.updateFlightById(req.params.Gate)
+    const newFlight= await flight.updateFlightById(req, res)
     res.json(newFlight)
 }
 const deleteFlight= async (req, res)=> {

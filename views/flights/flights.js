@@ -7,7 +7,7 @@ function getAllFlights()
         success: function(data) {
             $.each(data, function(index, flight) {
                 var row = '<tr>' +
-                    '<td>' + flight.flightID + '</td>' +
+                    '<td>' + flight.Number + '</td>' +
                     '<td>' + flight.flightDate + '</td>' +
                     '<td>' + flight.hour + '</td>' +
                     '<td>' + flight.Gate + '</td>' +
@@ -32,7 +32,7 @@ function getAllFlights()
 addNewFlight = (data)=>
 {
                 var row = '<tr>' +
-                    '<td>' + data.flightID + '</td>' +
+                    '<td>' + data.flightNumber + '</td>' +
                     '<td>' + data.flightDate + '</td>' +
                     '<td>' + data.hour + '</td>' +
                     '<td>' + data.Gate + '</td>' +
@@ -44,7 +44,7 @@ addNewFlight = (data)=>
                     '<td>' + data.ArrivingHour + '</td>' +
                     '<td><button class="editFlight" ' +
                     'data-flightid="' + data._id + '"' +
-                    'data-flightactualid="' + data.flightID + '"' +
+                    'data-flightnumber="' + data.flightNumber + '"' +
                     'data-flightdate="' + data.flightDate + '"' +
                     'data-hour="' + data.hour + '"' +
                     'data-gate="' + data.Gate + '"' +
@@ -67,7 +67,7 @@ $(document).ready(function() {
         console.log("create")
 
         var formData = {
-            flightID: $('#flightID').val(),
+            flightNumber: $('#flightNumber').val(),
             flightDate: $('#flightDate').val(),
             hour: $('#hour').val(),
             Gate: $('#Gate').val(),
@@ -78,6 +78,7 @@ $(document).ready(function() {
             NumberOfSeats: $('#NumberOfSeats').val(),
             ArrivingHour: $('#ArrivingHour').val()
         };
+        console.log("flioght number: ", formData.flightNumber)
 
         $.ajax({
             type: 'POST',
@@ -103,16 +104,17 @@ $(document).ready(function() {
         console.log("create")
 
         var formData = {
-            flightID: $('#flightID').val(),
-            flightDate: $('#flightDate').val(),
-            hour: $('#hour').val(),
-            Gate: $('#Gate').val(),
-            Destination: $('#Destination').val(),
-            Origin: $('#Origin').val(),
-            flightPrice: $('#flightPrice').val(),
-            ArrivingDate: $('#ArrivingDate').val(),
-            NumberOfSeats: $('#NumberOfSeats').val(),
-            ArrivingHour: $('#ArrivingHour').val()
+            flightID: $('#eflightID').val(),
+            flightNumber: $('#eflightNumber').val(),
+            flightDate: $('#eflightDate').val(),
+            hour: $('#ehour').val(),
+            Gate: $('#eGate').val(),
+            Destination: $('#eDestination').val(),
+            Origin: $('#eOrigin').val(),
+            flightPrice: $('#eflightPrice').val(),
+            ArrivingDate: $('#eArrivingDate').val(),
+            NumberOfSeats: $('#eNumberOfSeats').val(),
+            ArrivingHour: $('#eArrivingHour').val()
         };
 
         $.ajax({
@@ -134,11 +136,14 @@ $(document).ready(function() {
             });
     });
 
+
     $('#flightList').on('click', '.editFlight', function() {
         //var flightID = $(this).data('flightid');
         //('#flightDate').val()
+        console.log("flightid: ", $(this).data('flightid'))
             $('#editModal').css("display", "block");
-            $('#eflightID').val($(this).data('flightactualid'));
+            $('#eflightID').val($(this).data('flightid'));
+            $('#eflightNumber').val($(this).data('flightnumber'));
             $('#eflightDate').val(new Date($(this).data('flightdate')).toISOString().substr(0, 10));
             $('#ehour').val($(this).data('hour'));
             $('#eGate').val($(this).data('gate'));
