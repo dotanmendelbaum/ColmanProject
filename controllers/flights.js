@@ -4,6 +4,8 @@ const flight = require('../services/flights');
     res.render("../views/flights.js", { flight: flight.getFlights() });
  }*/
 const createFlight= async (req, res)=> {
+    console.log("got request")
+
     const newFlight= await flight.createFlight(req.body.flightID,
         req.body.flightDate,
         req.body.hour,
@@ -14,8 +16,9 @@ const createFlight= async (req, res)=> {
         req.body.ArrivingDate,
         req.body.NumberOfSeats,
         req.body.ArrivingHour)
+    console.log("flight created")
 
-    res.status(200).json("new flight created successfully")
+    res.status(200).json(newFlight);
 }
 
 const getAllFlightsPage = async (req, res) => {
@@ -37,8 +40,8 @@ const getFlight= async (req, res)=> {
     const newFlight= await flight.getFlightById(req.params.flightID)
     res.json(newFlight)
 }
-const updateFlightByGate= async (req, res)=> {
-    const newFlight= await flight.updateFlightByGate(req.params.Gate)
+const updateFlightById= async (req, res)=> {
+    const newFlight= await flight.updateFlightById(req.params.Gate)
     res.json(newFlight)
 }
 const deleteFlight= async (req, res)=> {
@@ -52,7 +55,7 @@ module.exports = {
     getNewFlightPage,
     getFlights,
     getFlight,
-    updateFlightByGate,
+    updateFlightById,
     deleteFlight
     //  index
 };

@@ -11,10 +11,15 @@ module.exports = (io) => {
         .get(OrderController.getPage)
         .post(OrderController.createOrder);
 
+    router.route('/new/:flightId')
+        .get(OrderController.getNewOrderPage)
+
     /*router.route('/:IDClient')
         .get(OrdersC.getorder)
         .put(OrdersC.updateOrderByID)
         .delete(OrdersC.deleteorder);*/
+
+
 
     return router;
 }

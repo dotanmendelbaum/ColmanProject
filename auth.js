@@ -7,7 +7,6 @@ function authorize(req, res, next)
         console.log("auth")
         return next()
     }
-    //call the next function
     res.redirect('/login')
 }
 
@@ -21,6 +20,7 @@ function authAdmin(req, res, next)
             return next()
         }
     }
+    console.log("notAdmin")
     //call the next function
     return res.redirect('/flights')
 }

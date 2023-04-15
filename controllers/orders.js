@@ -1,7 +1,11 @@
 const ordersService = require('../services/orders');
+const flight = require('../services/flights')
 const getPage = async (req, res) => {
     res.render("../views/orders", { order: ordersService.getOrders() });
  }
+ const getNewOrderPage = async(res,req)=>{
+    res.render("../views/newOrder", {flight: flight.getFlightById(res.params.id)})
+}
 const createOrder = async (req, res) => {
     const newOrder = await orderService.createOrder(req.params.IDClient,req.params.FullName,req.params.Price,req.params.DateOfOrder,req.params.NumberOfPassengers,req.params.FlightID);
     res.json(newOrder);
@@ -30,10 +34,14 @@ const getOrder = async (req, res) => {
                 message: "NumberOfPassengers is update",
               });
             }}
+
+
  module.exports={
   updateNumberOfPassengers,
      updatePrice,
      getOrder,
      getOrders,
+     getNewOrderPage,
      getPage,
-     createOrder};
+     createOrder
+};

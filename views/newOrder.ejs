@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>New Order</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <style>
+        /* Custom styles go here */
+    </style>
+</head>
+<body>
+<div class="container mt-5">
+    <h1>New Order</h1>
+    <hr>
+
+    <!-- Flight Details -->
+    <h3 class="mb-3">Flight Details</h3>
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>Flight ID</th>
+            <th>Flight Date</th>
+            <th>Hour</th>
+            <th>Gate</th>
+            <th>Destination</th>
+            <th>Origin</th>
+            <th>Flight Price</th>
+            <th>Arriving Date</th>
+            <th>Number of Seats</th>
+            <th>Arriving Hour</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td><%= flight.flightId %></td>
+            <td><%= flight.flightDate %></td>
+            <td><%= flight.flightHour %></td>
+            <td><%= flight.gate %></td>
+            <td><%= flight.destination %></td>
+            <td><%= flight.origin %></td>
+            <td><%= flight.flightPrice %></td>
+            <td><%= flight.arrivingDate %></td>
+            <td><%= flight.numSeats %></td>
+            <td><%= flight.arrivingHour %></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <!-- Payment Details -->
+    <h3 class="mb-3">Payment Details</h3>
+    <form id="paymentForm">
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Card Holder Name:</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="cardName" required>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Card Number:</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="cardNumber" required>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Expiration Date:</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" name="cardExpiry" placeholder="MM/YY" required>
+            </div>
+            <label class="col-sm-2 col-form-label">CVV:</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" name="cardCVC" required>
+            </div>
+        </div>
+    </form>
+</div>
+    <script>
+        // get the flight data from the server
+        const flightData =  JSON.stringify(flight)
+
+        // populate the flight details table
+        const flightIdElem = document.getElementById("flightId");
+        const flightDateElem = document.getElementById("flightDate");
+        const flightHourElem = document.getElementById("flightHour");
+        const gateElem = document.getElementById("gate");
+        const destinationElem = document.getElementById("destination");
+        const originElem = document.getElementById("origin");
+        const priceElem = document.getElementById("price");
+        const arrivingDateElem = document.getElementById("arrivingDate");
+        const numOfSeatsElem = document.getElementById("numOfSeats");
+        const arrivingHourElem = document.getElementById("arrivingHour");
+
+        flightIdElem.innerText = flightData._id;
+        flightDateElem.innerText = flightData.date.toLocaleDateString();
+        flightHourElem.innerText = flightData.date.toLocaleTimeString();
+        gateElem.innerText = flightData.gate;
+        destinationElem.innerText = flightData.destination;
+        originElem.innerText = flightData.origin;
+        priceElem.innerText = `$${flightData.price}`;
+        arrivingDateElem.innerText = flightData.arrivingDate.toLocaleDateString();
+        numOfSeatsElem.innerText = flightData.numOfSeats;
+        arrivingHourElem.innerText = flightData.arrivingDate.toLocaleTimeString();
+
+        // handle form submission
+        const paymentForm = document.getElementById("paymentForm");
+        paymentForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        // get form data
+        const formData = new FormData(event.target);
+        const cardName = formData.get("cardName");
+        const cardNumber = formData.get("cardNumber");
+        const cardExpiry = formData.get("cardExpiry");
+        const cardCVC = formData.get("cardCVC");
+        const billingAddress = formData.get("billingAddress");
+
+        // create order object
+        const order = {
+        flightId: flightData._id,
+        cardName,
+        cardNumber,
+        cardExpiry,
+        cardCVC,
+        billingAddress,
+    };
+
+        // send order to server
+        const response = await fetch("/orders", {
+        method: "POST",
+        headers: {
+        "Content-Type": "application/json",
+    },
+        body: JSON.stringify(order),
+    });
+
+        if (response.ok) {
+        // redirect to confirmation page
+        window.location.href = "/confirmation";
+    } else {
+        // handle error
+        console.error("Error creating order:", response.statusText);
+    }
+    });
+</script>
+</body>
+</html>
+
