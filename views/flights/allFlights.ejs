@@ -3,6 +3,8 @@
 <head>
     <title>All Flights</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+
     <link rel="stylesheet" type="text/css"  href="/stylesheets/lists.css">
 </head>
 <body>
@@ -19,8 +21,8 @@
     <div class="modal-content">
         <form id="create_flight_form">
 
-        <label for="flightID">Flight ID:</label>
-        <input type="number" id="flightID" name="flightID" required minlength="9" maxlength="9"><br>
+        <label for="flightNumber">Flight Number:</label>
+        <input type="number" id="flightNumber" name="flightNumber"><br>
 
         <label for="flightDate">Flight Date:</label>
         <input type="date" id="flightDate" name="flightDate" value="<%= new Date().toISOString().slice(0, 10) %>" required><br>
@@ -60,7 +62,10 @@
         <form id="edit_flight_form">
 
             <label for="flightID">Flight ID:</label>
-            <input type="number" id="eflightID" name="flightID" required minlength="9" maxlength="9"><br>
+            <input type="text" id="eflightID" name="flightID" readonly><br>
+
+            <label for="flightNumber">Flight Number:</label>
+            <input type="number" id="eflightNumber" name="flightNumber" required minlength="9" maxlength="9"><br>
 
             <label for="flightDate">Flight Date:</label>
             <input type="date" id="eflightDate" name="flightDate" value="<%= new Date().toISOString().slice(0, 10) %>" required><br>
@@ -118,21 +123,21 @@
         </thead>
         <tbody id="flightList">
         <% flights.forEach(function(flight) { %>
-            <tr>
-                <td><%= flight.flightID %></td>
-                <td><%= flight.flightDate %></td>
-                <td><%= flight.hour %></td>
-                <td><%= flight.Gate %></td>
-                <td><%= flight.Destination %></td>
-                <td><%= flight.Origin %></td>
-                <td><%= flight.flightPrice %></td>
-                <td><%= flight.ArrivingDate %></td>
-                <td><%= flight.NumberOfSeats %></td>
-                <td><%= flight.ArrivingHour %></td>
+            <tr id = "flight-<%= flight._id %>">
+                <td class = "flight-number"><%= flight.flightNumber %></td>
+                <td class = "flight-date"><%= flight.flightDate %></td>
+                <td class = "flight-hour"><%= flight.hour %></td>
+                <td class = "flight-gate"><%= flight.Gate %></td>
+                <td class = "flight-destination"><%= flight.Destination %></td>
+                <td class = "flight-origin"><%= flight.Origin %></td>
+                <td class = "flight-price"><%= flight.flightPrice %></td>
+                <td class = "flight-arriving-date"><%= flight.ArrivingDate %></td>
+                <td class = "flight-number-of-seats"><%= flight.NumberOfSeats %></td>
+                <td class = "flight-arriving-hour"><%= flight.ArrivingHour %></td>
                 <td>
                     <%if(isAdmin){%>
                         <button class="editFlight" data-flightid="<%= flight._id %>"
-                                data-flightactualid="<%= flight.flightID %>"
+                                data-flightnumber="<%= flight.flightNumber %>"
                                 data-flightdate="<%= flight.flightDate %>"
                                 data-hour="<%= flight.hour %>"
                                 data-gate="<%= flight.Gate %>"
