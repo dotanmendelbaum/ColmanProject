@@ -6,10 +6,10 @@
 const mongoose= require('mongoose');
 Schema=mongoose.Schema;
 const flight= new Schema({
-    flightID: {
+    flightNumber: {
         required: true,
         type: Number,
-        length: 9
+        //length: 9
     },
     flightDate: {
     type: Date,
