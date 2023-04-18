@@ -1,4 +1,5 @@
 const flight = require('../services/flights');
+const flightsModal= require('../models/flights')
 
 /*const index = (req, res) => {
     res.render("../views/flights.js", { flight: flight.getFlights() });
@@ -41,14 +42,20 @@ const getFlight= async (req, res)=> {
     const newFlight= await flight.getFlightById(req.params.flightID)
     res.json(newFlight)
 }
-const updateFlightById= async (req, res)=> {
+const updateFlightById = async (req, res, io)=> {
+
     const newFlight= await flight.updateFlightById(req, res)
-    res.json(newFlight)
+    res.status(200).json(newFlight)
+    io.emit("flight-changed", newFlight)
 }
 const deleteFlight= async (req, res)=> {
     console.log("delete")
     const newFlight= await flight.deleteFlight(req.params.flightID)
     res.status(200).json("delete succesfull")
+}
+
+const emitflightChange = (req, res, io) =>{
+    io.emit("flight-changed", )
 }
 module.exports = {
     createFlight,

@@ -1,3 +1,4 @@
+var socket = io()
 function getAllFlights()
 {
     $.ajax({
@@ -29,6 +30,36 @@ function getAllFlights()
     });
 }
 
+function UpdateRowData(flightId, newData){
+    const row = $("#flight-" + flightId);
+    row.find(".flight-number").text(newData.flightNumber);
+    row.find(".flight-date").text(newData.flightDate);
+    row.find(".flight-hour").text(newData.hour);
+    row.find(".flight-gate").text(newData.Gate);
+    row.find(".flight-destination").text(newData.Destination);
+    row.find(".flight-origin").text(newData.Origin);
+    row.find(".flight-price").text(newData.flightPrice);
+    row.find(".flight-arriving-date").text(newData.ArrivingDate);
+    row.find(".flight-number-of-seats").text(newData.NumberOfSeats);
+    row.find(".flight-arriving-hour").text(newData.ArrivingHour);
+}
+function refreshFlightById(flightId){
+    const row = $("#flight-" + flightId);
+    if(row){
+        //request the refreshed flight data from the server:
+        $.ajax({
+            type: 'GET',
+            url: '/flights/' + flightId,
+            encode: true
+        })
+            .done(function(data) {
+                UpdateRowData(row, data)
+            })
+            .fail(function(data) {
+                $('#result').text('Error creating flight: ' + data.responseText);
+            });
+    }
+}
 addNewFlight = (data)=>
 {
                 var row = '<tr>' +
@@ -60,7 +91,7 @@ addNewFlight = (data)=>
                 $('#flightList').append(row);
 }
 $(document).ready(function() {
-    getAllFlights()
+    //getAllFlights()
 
     $('#create_flight_form').on('submit', function(event) {
         event.preventDefault(); // prevent default form submission behavior
@@ -78,7 +109,7 @@ $(document).ready(function() {
             NumberOfSeats: $('#NumberOfSeats').val(),
             ArrivingHour: $('#ArrivingHour').val()
         };
-        console.log("flioght number: ", formData.flightNumber)
+        console.log("flight number: ", formData.flightNumber)
 
         $.ajax({
             type: 'POST',
@@ -101,7 +132,7 @@ $(document).ready(function() {
 
     $('#edit_flight_form').on('submit', function(event) {
         event.preventDefault(); // prevent default form submission behavior
-        console.log("create")
+        console.log("edit")
 
         var formData = {
             flightID: $('#eflightID').val(),
@@ -125,10 +156,9 @@ $(document).ready(function() {
             encode: true
         })
             .done(function(data) {
-                console.log("flight updated successfully")
+                console.log("flight updated Successfully")
                 $('#editModal').css("display", "none");
-                console.log(data)
-                addNewFlight(data)
+                UpdateRowData(data._id, data)
             })
             .fail(function(data) {
                 console.log("error updating flight")
@@ -178,5 +208,9 @@ $(document).ready(function() {
 
     $('#createFlightBtn').on('click', function() {
         $('#createModal').css("display", "block");
+    });
+
+    socket.on('flight-changed', function(data) {
+        UpdateRowData(data._id, data)
     });
 });

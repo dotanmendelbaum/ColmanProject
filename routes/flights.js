@@ -13,7 +13,7 @@ module.exports = (io) => {
 
     router.route('/:flightID')
         .get(FlightsC.getFlight)
-        .put(validateFlightData, FlightsC.updateFlightById)
+        .put(validateFlightData,  (req, res) => FlightsC.updateFlightById(req, res, io))
         .delete(FlightsC.deleteFlight);
 
     return router;

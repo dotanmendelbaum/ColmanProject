@@ -14,23 +14,37 @@ const getFlights= async()=>
 }
 const updateFlightById=async(req, res)=>
 {
-    const currentFlight = await getFlightById(req.params.flightID)
-    console.log("found flight for update")
+    const update = {
+        flightNumber: req.body.flightNumber,
+        flightDate: req.body.flightDate,
+        hour: req.body.hour,
+        Gate: req.body.Gate,
+        Destination: req.body.Destination,
+        Origin: req.body.Origin,
+        flightPrice: req.body.flightPrice,
+        ArrivingDate: req.body.ArrivingDate,
+        NumberOfSeats: req.body.NumberOfSeats,
+        ArrivingHour: req.body.ArrivingHour
+    }
+
+    const currentFlight = await flight.findByIdAndUpdate(req.params.flightID, update)
+    console.log("found flight for update. gate: ", update.Gate)
     if(!currentFlight)
         return null
-    // Update flight object with new schema
+    /*// Update flight object with new schema
+    currentFlight.Gate = req.body.Gate;
     currentFlight.flightNumber = req.body.flightNumber;
     currentFlight.flightDate = req.body.flightDate;
     currentFlight.hour = req.body.hour;
-    currentFlight.Gate = req.body.Gate;
     currentFlight.Destination = req.body.Destination;
     currentFlight.Origin = req.body.Origin;
     currentFlight.flightPrice = req.body.flightPrice;
     currentFlight.ArrivingDate = req.body.ArrivingDate;
     currentFlight.NumberOfSeats = req.body.NumberOfSeats;
     currentFlight.ArrivingHour = req.body.ArrivingHour;
-    currentFlight.save()
-    res.status(200)
+    currentFlight.save()*/
+
+    return currentFlight
 }
 function validateFlightData(req, res, next)
 {
@@ -67,6 +81,7 @@ function validateFlightData(req, res, next)
     }
 
     // If all validation passes continue to the next function
+    console.log("flight validated")
     return next()
 }
 
