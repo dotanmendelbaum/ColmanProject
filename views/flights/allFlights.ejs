@@ -4,106 +4,164 @@
     <title>All Flights</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
-
+    <title>Add Map</title>
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <style>
+        body {
+            background-image: url("https://www.elal.com/media/i51mwuua/ela-7879_climber_mr-0417.jpg");
+            background-size: cover;
+        }
+    </style>
     <link rel="stylesheet" type="text/css"  href="/stylesheets/lists.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
 </head>
 <body>
-<div class="sidebar">
-    <h2>Navigation</h2>
-    <ul>
-        <li><a href="#">Home</a></li>
-        <li><a href="#">All Flights</a></li>
-        <li><a href="/flights/new">Add Flight</a></li>
-    </ul>
-</div>
-<div id="createModal" class="modal">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
 
-    <div class="modal-content">
-        <form id="create_flight_form">
+<css>
+    <style>
+    #block_center {
+        width: 1200px;
+        margin-right: 150px;
+        margin-left: 50px;
+      }
+    </style>
+</css>
+<div id="createModal" class="modal" style="color:black;" >
 
-        <label for="flightNumber">Flight Number:</label>
-        <input type="number" id="flightNumber" name="flightNumber"><br>
+    <div class="modal-content" style="width: 500px; background-image: url(https://www.kishrey-teufa.co.il/clients/kishreyteufa/gallery/Website_General/Flights/Plane9_750520.jpg); background-size: cover;" >
+        <form id="create_flight_form" style="font-family: Georgia, 'Times New Roman', Times, serif;">
+        
+        <a class="btn-close" type="button"  aria-label="Close" href="/flights" style="color:white;"> </a></button>
+        <label for="flightNumber" style="text-align: left; background-color: khaki;">Flight Number:</label>
+        <input type="number" id="flightNumber" name="flightNumber" style="width: 200px; background-color: white;"><br>
+        
+        <label for="flightDate" style="text-align: left; background-color: khaki;">Flight Date:</label>
+        &nbsp;	
+        &nbsp;	
+        &nbsp;	
+        <input type="date" id="flightDate" name="flightDate" value="<%= new Date().toISOString().slice(0, 10) %>" required style="width: 200px;background-color: white;"><br>
 
-        <label for="flightDate">Flight Date:</label>
-        <input type="date" id="flightDate" name="flightDate" value="<%= new Date().toISOString().slice(0, 10) %>" required><br>
+        <label for="hour" style="text-align: left;  background-color: khaki;">Hour:</label>
+        &nbsp;	
+        &nbsp;	
+        &nbsp;	
+        &nbsp;	
+        &nbsp;	
+        &nbsp;	
+        &nbsp;	
+        &nbsp;	
+        <input type="time" id="hour" name="hour" required style="width: 200px;background-color: white;"><br>
 
-        <label for="hour">Hour:</label>
-        <input type="time" id="hour" name="hour" required><br>
+        <label for="Gate" style="text-align: left;  background-color: khaki;">Gate:</label>
+        &nbsp;	
+        &nbsp;	
+        &nbsp;	
+        &nbsp;	
+        &nbsp;	
+        &nbsp;	
+        &nbsp;	
+        &nbsp;	
+        &nbsp;	
+        <input type="text" id="Gate" name="Gate" required style="width: 200px;background-color: white;"><br>
+          
+        <label for="Destination" style="text-align: left;  background-color: khaki;">Destination:</label>
+        &nbsp;	
+        &nbsp;	
+        <input type="text" id="Destination" name="Destination" required style="width: 200px;background-color: white;"><br>
+  
+        <label for="Origin" style="text-align: left;  background-color: khaki;">Origin:</label>
+        &nbsp;	
+        &nbsp;	
+        &nbsp;	
+        &nbsp;	
+        &nbsp;	
+        &nbsp;	
+        &nbsp;	
+        &nbsp;	
+        <input type="text" id="Origin" name="Origin" value="Israel" required style="width: 200px;background-color: white;"><br>
 
-        <label for="Gate">Gate:</label>
-        <input type="text" id="Gate" name="Gate" required><br>
+        <label for="flightPrice" style="text-align: left; background-color: khaki;">Flight Price:</label>
+        &nbsp;	
+        &nbsp;	
+        &nbsp;	
+        &nbsp;	
+        <input type="number" id="flightPrice" name="flightPrice" required style="width: 200px;background-color: white;"><br>
 
-        <label for="Destination">Destination:</label>
-        <input type="text" id="Destination" name="Destination" required><br>
+        <label for="ArrivingDate" style="text-align: left; background-color: khaki;">Arriving Date:</label>
+        &nbsp;	
+        &nbsp;	
+        <input type="date" id="ArrivingDate" name="ArrivingDate" value="<%= new Date().toISOString().slice(0, 10) %>" required style="width: 200px;background-color: white;"><br>
 
-        <label for="Origin">Origin:</label>
-        <input type="text" id="Origin" name="Origin" value="Israel" required><br>
+        <label for="NumberOfSeats" style="text-align: left; background-color: khaki;">Number of Seats:</label>
+        <input type="number" id="NumberOfSeats" name="NumberOfSeats" required style="width: 200px;background-color: white;"><br>
 
-        <label for="flightPrice">Flight Price:</label>
-        <input type="number" id="flightPrice" name="flightPrice" required><br>
+        <label for="ArrivingHour" style="text-align: left; background-color: khaki;">Arriving Hour:</label>
+        <input type="time" id="ArrivingHour" name="ArrivingHour" required style="width: 200px;background-color: white;"><br>
 
-        <label for="ArrivingDate">Arriving Date:</label>
-        <input type="date" id="ArrivingDate" name="ArrivingDate" value="<%= new Date().toISOString().slice(0, 10) %>" required><br>
-
-        <label for="NumberOfSeats">Number of Seats:</label>
-        <input type="number" id="NumberOfSeats" name="NumberOfSeats" required><br>
-
-        <label for="ArrivingHour">Arriving Hour:</label>
-        <input type="time" id="ArrivingHour" name="ArrivingHour" required><br>
-
-        <button type="submit" id="create_flight">Create Flight</button>
+        <button type="submit" id="create_flight" class="btn btn-secondary">Create Flight</button>
         </form>
     </div>
 </div>
 
-<div id="editModal" class="modal">
+<div id="editModal" class="modal" style="color:black;">
 
-    <div class="modal-content">
+    <div class="modal-content"  style="width: 500px; background-image: url(https://www.kishrey-teufa.co.il/clients/kishreyteufa/gallery/Website_General/Flights/Plane9_750520.jpg); background-size: cover;">
         <form id="edit_flight_form">
+            <a class="btn-close" type="button"  aria-label="Close" href="/flights" style="color:white;"> </a></button>
+            <label for="flightID" style="text-align: left; background-color: khaki;">Flight ID:</label>
+            <input type="text" id="eflightID" name="flightID" readonly style="width: 200px; background-color: white;"><br>
 
-            <label for="flightID">Flight ID:</label>
-            <input type="text" id="eflightID" name="flightID" readonly><br>
+            <label for="flightNumber" style="text-align: left; background-color: khaki;">Flight Number:</label>
+            <input type="number" id="eflightNumber" name="flightNumber" required minlength="9" maxlength="9" style="width: 200px; background-color: white;"><br>
 
-            <label for="flightNumber">Flight Number:</label>
-            <input type="number" id="eflightNumber" name="flightNumber" required minlength="9" maxlength="9"><br>
+            <label for="flightDate" style="text-align: left; background-color: khaki;">Flight Date:</label>
+            <input type="date" id="eflightDate" name="flightDate" value="<%= new Date().toISOString().slice(0, 10) %>" required style="width: 200px; background-color: white;"><br>
 
-            <label for="flightDate">Flight Date:</label>
-            <input type="date" id="eflightDate" name="flightDate" value="<%= new Date().toISOString().slice(0, 10) %>" required><br>
+            <label for="hour" style="text-align: left; background-color: khaki;">Hour:</label>
+            <input type="time" id="ehour" name="hour" required style="width: 200px; background-color: white;"><br>
 
-            <label for="hour">Hour:</label>
-            <input type="time" id="ehour" name="hour" required><br>
+            <label for="Gate" style="text-align: left; background-color: khaki;">Gate:</label>
+            <input type="text" id="eGate" name="Gate" required style="width: 200px; background-color: white;"><br>
 
-            <label for="Gate">Gate:</label>
-            <input type="text" id="eGate" name="Gate" required><br>
+            <label for="Destination" style="text-align: left; background-color: khaki;">Destination:</label>
+            <input type="text" id="eDestination" name="Destination" required style="width: 200px; background-color: white;"><br>
 
-            <label for="Destination">Destination:</label>
-            <input type="text" id="eDestination" name="Destination" required><br>
+            <label for="Origin" style="text-align: left; background-color: khaki;">Origin:</label>
+            <input type="text" id="eOrigin" name="Origin" value="Israel" required style="width: 200px; background-color: white;"><br>
 
-            <label for="Origin">Origin:</label>
-            <input type="text" id="eOrigin" name="Origin" value="Israel" required><br>
+            <label for="flightPrice" style="text-align: left; background-color: khaki;">Flight Price:</label>
+            <input type="number" id="eflightPrice" name="flightPrice" required style="width: 200px; background-color: white;"><br>
 
-            <label for="flightPrice">Flight Price:</label>
-            <input type="number" id="eflightPrice" name="flightPrice" required><br>
+            <label for="ArrivingDate" style="text-align: left; background-color: khaki;">Arriving Date:</label>
+            <input type="date" id="eArrivingDate" name="ArrivingDate" value="<%= new Date().toISOString().slice(0, 10) %>" required style="width: 200px; background-color: white;"><br>
 
-            <label for="ArrivingDate">Arriving Date:</label>
-            <input type="date" id="eArrivingDate" name="ArrivingDate" value="<%= new Date().toISOString().slice(0, 10) %>" required><br>
+            <label for="NumberOfSeats" style="text-align: left; background-color: khaki;">Number of Seats:</label>
+            <input type="number" id="eNumberOfSeats" name="NumberOfSeats" required style="width: 200px; background-color: white;"><br>
 
-            <label for="NumberOfSeats">Number of Seats:</label>
-            <input type="number" id="eNumberOfSeats" name="NumberOfSeats" required><br>
-
-            <label for="ArrivingHour">Arriving Hour:</label>
-            <input type="time" id="eArrivingHour" name="ArrivingHour" required><br>
+            <label for="ArrivingHour" style="text-align: left; background-color: khaki;">Arriving Hour:</label>
+            <input type="time" id="eArrivingHour" name="ArrivingHour" required style="width: 200px; background-color: white;"><br>
 
             <button type="submit" id="edit_flight">Update Flight</button>
         </form>
     </div>
 </div>
-<div class="main-content">
-    <h1>All Flights</h1>
+<%- include('../partials/navBar.ejs') %>
+<div class="main-content" id="block_center" >
+    <label style="font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; font-size:  50px ; color:bisque">
+        <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" class="bi bi-airplane-engines" viewBox="0 0 16 16">
+            <path d="M8 0c-.787 0-1.292.592-1.572 1.151A4.347 4.347 0 0 0 6 3v3.691l-2 1V7.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.191l-1.17.585A1.5 1.5 0 0 0 0 10.618V12a.5.5 0 0 0 .582.493l1.631-.272.313.937a.5.5 0 0 0 .948 0l.405-1.214 2.21-.369.375 2.253-1.318 1.318A.5.5 0 0 0 5.5 16h5a.5.5 0 0 0 .354-.854l-1.318-1.318.375-2.253 2.21.369.405 1.214a.5.5 0 0 0 .948 0l.313-.937 1.63.272A.5.5 0 0 0 16 12v-1.382a1.5 1.5 0 0 0-.83-1.342L14 8.691V7.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v.191l-2-1V3c0-.568-.14-1.271-.428-1.849C9.292.591 8.787 0 8 0ZM7 3c0-.432.11-.979.322-1.401C7.542 1.159 7.787 1 8 1c.213 0 .458.158.678.599C8.889 2.02 9 2.569 9 3v4a.5.5 0 0 0 .276.447l5.448 2.724a.5.5 0 0 1 .276.447v.792l-5.418-.903a.5.5 0 0 0-.575.41l-.5 3a.5.5 0 0 0 .14.437l.646.646H6.707l.647-.646a.5.5 0 0 0 .14-.436l-.5-3a.5.5 0 0 0-.576-.411L1 11.41v-.792a.5.5 0 0 1 .276-.447l5.448-2.724A.5.5 0 0 0 7 7V3Z"/>
+          </svg>
+        All Flights</label>
+
     <%if(isAdmin){%>
-    <button id="createFlightBtn">Create New Flight</button>
+    <button id="createFlightBtn" style="background-color: gainsboro ;color: black;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+        <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+      </svg> &nbsp;	
+      Create New Flight</button>
     <%}%>
-    <table>
+    <table style="background-color:beige">
         <thead>
         <tr>
             <th>Flight ID</th>
@@ -141,17 +199,20 @@
                                 data-flightdate="<%= flight.flightDate %>"
                                 data-hour="<%= flight.hour %>"
                                 data-gate="<%= flight.Gate %>"
-                                data-destination="<%= flight.Destination %>"
+                                data-destination="<%=  flight.Destination %>"
                                 data-origin="<%= flight.Origin %>"
                                 data-price="<%= flight.flightPrice %>"
                                 data-arrivingdate="<%= flight.ArrivingDate %>"
                                 data-numberofseats="<%= flight.NumberOfSeats %>"
                                 data-arrivinghour="<%= flight.ArrivingHour %>">
-                            <i class="trash"></i> Edit
+                            <i class="trash"></i> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pen" viewBox="0 0 16 16">
+                                <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001zm-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708l-1.585-1.585z"/>
+                              </svg>
                         </button>
-
-                        <button class="deleteFlight" data-flightid="<%= flight._id %>">
-                            <i class="edit"></i> Delete
+                        <button type="button" class="deleteFlight" data-flightid="<%= flight._id %>">
+                            <i class="edit"></i> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+                                <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z"/>
+                              </svg>
                         </button>
                     <%}%>
                 </td>
@@ -160,6 +221,76 @@
         </tbody>
     </table>
 </div>
+
+<div class="row">
+    <div class="col">
+        <label style="background-color: bisque; font-size: 20px;">Flights Destinations</label>
+        <div id="map"></div>
+        <script>(g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})
+         ({key: "AIzaSyBSkfNxcG5hPUwz6NWGC0yhx8tcmDlXGEQ", v: "beta"});</script>
+        
+         <style>
+        #map {
+        height: 400px; /* The height of the map */
+        width: 100%; /* the width of the map */
+        }
+        </style>
+        <script>
+        // Initialize and add the map
+        let map;
+        
+        async function initMap() {
+        //  location of the destination
+        const position = { lat: 32.006185878587566, lng: 34.88549709487867 };
+        // Request needed libraries.
+        const { Map } = await google.maps.importLibrary("maps");
+        const { AdvancedMarkerView } = await google.maps.importLibrary("marker");
+        
+        // map
+        map = new Map(document.getElementById("map"), {
+        zoom: 4,
+        center: position,
+        mapId: "DEMO_MAP_ID",
+        });
+        
+        //  marker
+        const marker = new AdvancedMarkerView({
+        map: map,
+        position: position,
+        title: "Uluru",
+        });
+        }
+        
+        initMap();
+        </script>
+    </div>
+    <div class="col">
+      <!-- the DIV that will contain the widget -->
+      <label style="background-color: bisque;font-size: 20px">Web Services</label>
+    <div class="weatherWidget" style="height: 500px; width: 400px;"></div>
+
+<script>
+   window.weatherWidgetConfig =  window.weatherWidgetConfig || [];
+   window.weatherWidgetConfig.push({
+       selector:".weatherWidget",
+       apiKey:"EM33PYFYDJGMTW84K7VCK5C2Y", 
+       location:"Jerusalem, Israel", //Enter an address
+       unitGroup:"metric", //"us" or "metric"
+       forecastDays:5, //how many days forecast to show
+       title:"Jerusalem, Israel", //optional title to show in the 
+       showTitle:true, 
+       showConditions:true
+   });
+  
+   (function() {
+   var d = document, s = d.createElement('script');
+   s.src = 'https://www.visualcrossing.com/widgets/forecast-simple/weather-forecast-widget-simple.js';
+   s.setAttribute('data-timestamp', +new Date());
+   (d.head || d.body).appendChild(s);
+   })();
+</script>
+    </div>
+  </div>
 <script type="text/javascript" src="./flights.js"></script>
 </body>
 </html>
