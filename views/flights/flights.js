@@ -319,6 +319,14 @@ $(document).ready(function() {
     socket.on('flight-changed', function(data) {
         UpdateRowData(data._id, data)
     });
+
+    socket.on('new-flight', function(data) {
+        addNewFlight(data)
+    });
+    socket.on('delete-flight', function(data) {
+        UpdateRowData(data._id, data)
+    });
+
 });
 
 (function() {
