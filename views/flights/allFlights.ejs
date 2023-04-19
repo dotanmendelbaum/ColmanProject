@@ -63,6 +63,7 @@
             <th>Arriving Date</th>
             <th>Number of Seats</th>
             <th>Arriving Hour</th>
+            <th>weather</th>
             <%if(isAdmin){%>
             <th>Actions</th>
             <%}%>
@@ -81,7 +82,7 @@
                 <td class = "flight-arriving-date"><%= flight.ArrivingDate %></td>
                 <td class = "flight-number-of-seats"><%= flight.NumberOfSeats %></td>
                 <td class = "flight-arriving-hour"><%= flight.ArrivingHour %></td>
-                <td>
+                <td class = "weather">0</td>
                 <td><button class="orderFlight" data-flightid="<%= flight._id %>">Order</button>
                     <%if(isAdmin){%>
                         <button class="editFlight" data-flightid="<%= flight._id %>"
@@ -154,32 +155,7 @@
         initMap();
         </script>
     </div>
-    <div class="col">
-      <!-- the DIV that will contain the widget -->
-      <label style="background-color: bisque;font-size: 20px">Web Services</label>
-    <div class="weatherWidget" style="height: 500px; width: 400px;"></div>
 
-<script>
-   window.weatherWidgetConfig =  window.weatherWidgetConfig || [];
-   window.weatherWidgetConfig.push({
-       selector:".weatherWidget",
-       apiKey:"EM33PYFYDJGMTW84K7VCK5C2Y", 
-       location:"Jerusalem, Israel", //Enter an address
-       unitGroup:"metric", //"us" or "metric"
-       forecastDays:5, //how many days forecast to show
-       title:"Jerusalem, Israel", //optional title to show in the 
-       showTitle:true, 
-       showConditions:true
-   });
-  
-   (function() {
-   var d = document, s = d.createElement('script');
-   s.src = 'https://www.visualcrossing.com/widgets/forecast-simple/weather-forecast-widget-simple.js';
-   s.setAttribute('data-timestamp', +new Date());
-   (d.head || d.body).appendChild(s);
-   })();
-</script>
-    </div>
 
 </div>
 <script type="text/javascript" src="./flights.js"></script>
