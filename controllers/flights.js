@@ -6,7 +6,7 @@ const twitterUtil = require('../twitterApi.js');
 /*const index = (req, res) => {
     res.render("../views/flights.js", { flight: flight.getFlights() });
  }*/
-const createFlight= async (req, res)=> {
+const createFlight= async (req, res, io)=> {
     console.log("got request")
     const newFlight= await flight.createFlight(req.body.flightNumber,
         req.body.flightDate,
@@ -20,6 +20,7 @@ const createFlight= async (req, res)=> {
         req.body.ArrivingHour)
     console.log("flight created")
     twitterUtil.tweet(newFlight)
+    io.emit("new-flight", newFlight);
     res.status(200).json(newFlight);
 }
 

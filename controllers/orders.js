@@ -4,7 +4,7 @@ const flight = require('../services/flights');
 const getPage = async (req, res) => {
     const fli = await orderService.getOrders(req.session.user.email)
     console.log("orders: ", fli)
-    res.render("orders/orders.ejs", { flights: fli});
+    res.render("orders/orders.ejs", { flights: fli, isAdmin:req.session.isAdmin});
  }
  const getNewOrderPage = async(req,res)=>{
     res.render("orders/newOrder.ejs")
