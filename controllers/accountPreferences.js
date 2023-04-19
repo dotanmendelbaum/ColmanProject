@@ -4,7 +4,7 @@ const service = require("../services/accountPreferences")
 getMyAccountPage = async (req, res) => {
     const usr = await users.findOne({email: req.session.user.email})
     if(usr)
-        res.render("account/accountPreferences.ejs", {user: usr})
+        res.render("account/accountPreferences.ejs", {user: usr, isAdmin: req.session.isAdmin})
 }
 
 updateUserData = async (req, res, io) => {
