@@ -31,7 +31,22 @@ function getAllFlights()
         }
     });
 }
-
+function getFlightData(flightId){
+    const row = $("#flight-" + flightId);
+    const data = {
+        flightNumber: row.find(".flight-number").text(),
+        flightDate: row.find(".flight-date").text(),
+        hour: row.find(".flight-hour").text(),
+        Gate: row.find(".flight-gate").text(),
+        Destination: row.find(".flight-destination").text(),
+        Origin:row.find(".flight-origin").text(),
+        flightPrice:row.find(".flight-price").text(),
+        ArrivingDate:row.find(".flight-arriving-date").text(),
+        NumberOfSeats:row.find(".flight-number-of-seats").text(),
+        ArrivingHour:row.find(".flight-arriving-hour").text()
+    }
+    return data
+}
 function UpdateRowData(flightId, newData){
     const row = $("#flight-" + flightId);
     row.find(".flight-number").text(newData.flightNumber);
@@ -183,7 +198,7 @@ $(document).ready(function() {
             $('#eDestination').val($(this).data('destination'));
             $('#eOrigin').val($(this).data('origin'));
             $('#eflightPrice').val($(this).data('price'));
-            $('#AerrivingDate').val(new Date($(this).data('arrivingdate')).toISOString().substr(0, 10));
+            $('#eArrivingDate').val(new Date($(this).data('arrivingdate')).toISOString().substr(0, 10));
             $('#eNumberOfSeats').val($(this).data('numberofseats'));
             $('#eArrivingHour').val($(this).data('arrivinghour'));
     });
@@ -216,8 +231,86 @@ $(document).ready(function() {
     $('.btn-close').on('click', function(){
         $('#editModal').css("display", "none");
         $('#createModal').css("display", "none");
+        $('#orderModal').css("display", "none");
 
     });
+
+    $('#flightList').on('click', '.orderFlight', function() {
+        console.log("order")
+        const row = $("#flight-" + $(this).data('flightid'));
+        var flight = getFlightData($(this).data('flightid'))
+        console.log("number:" , flight.flightNumber)
+        $('#orderModal').css("display", "block");
+        $('#oflightID').val($(this).data('flightid'));
+        $('#oflightNumber').val(flight.flightNumber);
+        $('#oflightDate').val(new Date(flight.flightDate).toISOString().substr(0, 10));
+        $('#ohour').val(flight.hour);
+        $('#oGate').val(flight.Gate);
+        $('#oDestination').val(flight.Destination);
+        $('#oOrigin').val(flight.Origin);
+        $('#oflightPrice').val(flight.flightPrice);
+        $('#oArrivingDate').val(new Date(flight.ArrivingDate).toISOString().substr(0, 10));
+        $('#oNumberOfSeats').val(flight.NumberOfSeats);
+        $('#oArrivingHour').val(flight.ArrivingHour);
+    })
+
+    $('#order_flight_form').on('submit', function(event) {
+        event.preventDefault(); // prevent default form submission behavior
+        const fData = {
+            flightID: $('#oflightID').val(),
+            flightNumber: $('#oflightNumber').val(),
+            flightDate: $('#oflightDate').val(),
+            hour: $('#ohour').val(),
+            Gate: $('#oGate').val(),
+            Destination: $('#oDestination').val(),
+            Origin: $('#oOrigin').val(),
+            flightPrice: $('#oflightPrice').val(),
+            ArrivingDate: $('#oArrivingDate').val(),
+            NumberOfSeats: $('#oNumberOfSeats').val(),
+            ArrivingHour: $('#oArrivingHour').val()
+        }
+        const pData = {
+            cardName: $('#cardName').val(),
+            cardNumber: $('#cardNumber').val(),
+            expiryDate: $('#expiryDate').val(),
+            cvv: $('#cvv').val()
+        }
+        var dataInfo = {
+            flightID: $('#oflightID').val(),
+            flightNumber: $('#oflightNumber').val(),
+            flightDate: $('#oflightDate').val(),
+            hour: $('#ohour').val(),
+            Gate: $('#oGate').val(),
+            Destination: $('#oDestination').val(),
+            Origin: $('#oOrigin').val(),
+            flightPrice: $('#oflightPrice').val(),
+            ArrivingDate: $('#oArrivingDate').val(),
+            NumberOfSeats: $('#oNumberOfSeats').val(),
+            ArrivingHour: $('#oArrivingHour').val(),
+            cardName: $('#cardName').val(),
+            cardNumber: $('#cardNumber').val(),
+            expiryDate: $('#expiryDate').val(),
+            cvv: $('#cvv').val()
+        };
+        console.log(dataInfo)
+        $.ajax({
+            type: 'POST',
+            url: '/flights/book',
+            data: dataInfo,
+            dataType: 'json',
+            encode: true
+        })
+            .done(function(data) {
+                console.log("good")
+                $('#orderModal').css("display", "none");
+               //window.location = '/orders'
+            })
+            .fail(function(data) {
+                console.log("error ordering flight")
+                //$('#result').text('Error creating flight: ' + data.responseText);
+            });
+    });
+
 
     $('#btn-create-close').on('click', function(){
         $('#createModal').css("display", "none");

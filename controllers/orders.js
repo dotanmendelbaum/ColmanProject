@@ -1,15 +1,31 @@
-const ordersService = require('../services/orders');
-const flight = require('../services/flights')
+const orderService = require('../services/orders');
+const flight = require('../services/flights');
+
 const getPage = async (req, res) => {
-    res.render("../views/orders", { order: ordersService.getOrders() });
+    const fli = await orderService.getOrders(req.session.user.email)
+    console.log("orders: ", fli)
+    res.render("orders/orders.ejs", { flights: fli});
  }
- const getNewOrderPage = async(res,req)=>{
-    res.render("../views/newOrder", {flight: flight.getFlightById(res.params.id)})
+ const getNewOrderPage = async(req,res)=>{
+    res.render("orders/newOrder.ejs")
+}
+
+const processPayment = async(req,res, next) => {
+    //we don't actually process any payment or check anything
+    next()
 }
 const createOrder = async (req, res) => {
-    const newOrder = await orderService.createOrder(req.params.IDClient,req.params.FullName,req.params.Price,req.params.DateOfOrder,req.params.NumberOfPassengers,req.params.FlightID);
-    res.json(newOrder);
-};
+    console.log("create order")
+    const newOrder = await orderService.createOrder(req.session.user, req.body)
+    console.log("order: ", newOrder)
+
+    if(newOrder)
+    {
+        return res.status(200).json("success!!! thanks for your money $$$");
+
+    }
+    res.status(500)
+}
 const getOrders = async (req, res) => {
     const orders = await orderService.getOrders();
     res.json(orders);
@@ -43,5 +59,6 @@ const getOrder = async (req, res) => {
      getOrders,
      getNewOrderPage,
      getPage,
-     createOrder
+     createOrder,
+     processPayment
 };

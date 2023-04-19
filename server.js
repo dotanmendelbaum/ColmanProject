@@ -61,7 +61,7 @@ app.use("/players", playerRouter);
 app.use("/login", loginRoute);
 app.use("/register", registerRoute);
 app.use("/flights", flightsRoute);
-app.use("/myorders", ordersRoute);
+app.use("/orders", ordersRoute);
 app.use("/admin", adminRoute)
 app.use("/myaccount", accountPreferencesRoute)
 app.use("/logout", logoutRoute)

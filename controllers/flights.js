@@ -1,5 +1,6 @@
 const flight = require('../services/flights');
 const flightsModal= require('../models/flights')
+const crypto = require('crypto');
 
 /*const index = (req, res) => {
     res.render("../views/flights.js", { flight: flight.getFlights() });
@@ -33,6 +34,7 @@ const getNewFlightPage = async (req, res) => {
     // Render the page with the list of flights
     res.render('flights/flights', {isAdmin: req.session.isAdmin})
 }
+
 
 const getFlights= async (req, res)=> {
     const newFlight= await flight.getFlights()
