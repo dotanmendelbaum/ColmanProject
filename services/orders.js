@@ -1,28 +1,37 @@
 const Orders = require('../models/orders');
-const createOrders = async (IDClient,NumberOfPassengers,Price,FlightID,DateOfOrder,FullName ) => {
+const Users = require('../models/user');
+const Flights = require('../models/flights')
+const createOrder = async (user, data) => {
+    var currentUser = await Users.findOne({email: user.email})
+    console.log("data: ", data)
     const orders = new Orders({
-        FullName : FullName,
-        IDClient: IDClient,
-        NumberOfPassengers:NumberOfPassenodegers,
-        Price:Price,
-        FlightID:FlightID
+        IDClient: currentUser.id,
+        Price:data.flightPrice,
+        FlightID:data.flightID,
+        Date: Date.now()
     });
-
-    if (DateOfOrder)
-        Orders.DateOfOrder = DateOfOrder;
-
-    return await Orders.save();
+    return await orders.save();
 };
+
 const getOrderById = async (IDClient) => {
     return await Orders.findById(IDClient);
 };
-const getOrders = async () => {
-    return await Orders.find({});}
+const getOrders = async (email) => {
+    const currentUser = await Users.findOne({email: email})
+    const id = currentUser.id
+    const orders =  await Orders.find({IDClient: id});
+
+    const flightIds = orders.map(order => order.FlightID);
+
+    // Find all flights whose IDs are in the flightIds array
+    const flights = await Flights.find({ _id: { $in: flightIds } });
+
+    return flights
+}
 const updateOrders = async (IDClient,NumberOfPassengers,Price,FlightID,DateOfOrder,FullName  ) => {
     const order = await getOrderById(IDClient);
         if (!order)
             return null;
-    
         order.IDClient = IDClient;
         order.NumberOfPassengers=NumberOfPassengers;
         order.Price=Price;
@@ -41,7 +50,7 @@ const updateOrders = async (IDClient,NumberOfPassengers,Price,FlightID,DateOfOrd
         return order;
     };
     module.exports = {
-        createOrders,
+        createOrder,
         getOrderById,
         getOrders,
         updateOrders,

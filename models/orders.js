@@ -7,24 +7,14 @@ const orderSchema = new Schema({
         type: String,
         required: true
     },
-    FullName:
-    {
-     type:String,
-     required: true
-    },
     Price:
     {
     type: Number,
     required: true
     },
-    NumberOfPassengers:
-   {
-    type:Number,
-    require:true
-   },
    FlightID:
    {
-    type:Number,
+    type:String,
     required: true
    },
    DateOfOrder:
@@ -32,7 +22,6 @@ const orderSchema = new Schema({
     type:Date,
     default: Date.now
    },
-
 });
 
 module.exports = mongoose.model('Orders', orderSchema);

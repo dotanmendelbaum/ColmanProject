@@ -1,0 +1,42 @@
+<div id="editModal" class="modal" style="color:black;">
+
+    <div class="modal-content"  style="width: 500px; background-image: url(https://www.kishrey-teufa.co.il/clients/kishreyteufa/gallery/Website_General/Flights/Plane9_750520.jpg); background-size: cover;">
+        <form id="edit_flight_form">
+            <a class="btn-close" type="button"  aria-label="Close" style="color:white;"> </a></button>
+            <label for="flightID" style="text-align: left; background-color: khaki;">Flight ID:</label>
+            <input type="text" id="eflightID" name="flightID" readonly style="width: 200px; background-color: white;"><br>
+
+            <label for="flightNumber" style="text-align: left; background-color: khaki;">Flight Number:</label>
+            <input type="number" id="eflightNumber" name="flightNumber" required minlength="9" maxlength="9" style="width: 200px; background-color: white;"><br>
+
+            <label for="flightDate" style="text-align: left; background-color: khaki;">Flight Date:</label>
+            <input type="date" id="eflightDate" name="flightDate" value="<%= new Date().toISOString().slice(0, 10) %>" required style="width: 200px; background-color: white;"><br>
+
+            <label for="hour" style="text-align: left; background-color: khaki;">Hour:</label>
+            <input type="time" id="ehour" name="hour" required style="width: 200px; background-color: white;"><br>
+
+            <label for="Gate" style="text-align: left; background-color: khaki;">Gate:</label>
+            <input type="text" id="eGate" name="Gate" required style="width: 200px; background-color: white;"><br>
+
+            <label for="Destination" style="text-align: left; background-color: khaki;">Destination:</label>
+            <input type="text" id="eDestination" name="Destination" required style="width: 200px; background-color: white;"><br>
+
+            <label for="Origin" style="text-align: left; background-color: khaki;">Origin:</label>
+            <input type="text" id="eOrigin" name="Origin" value="Israel" required style="width: 200px; background-color: white;"><br>
+
+            <label for="flightPrice" style="text-align: left; background-color: khaki;">Flight Price:</label>
+            <input type="number" id="eflightPrice" name="flightPrice" required style="width: 200px; background-color: white;"><br>
+
+            <label for="ArrivingDate" style="text-align: left; background-color: khaki;">Arriving Date:</label>
+            <input type="date" id="eArrivingDate" name="ArrivingDate" value="<%= new Date().toISOString().slice(0, 10) %>" required style="width: 200px; background-color: white;"><br>
+
+            <label for="NumberOfSeats" style="text-align: left; background-color: khaki;">Number of Seats:</label>
+            <input type="number" id="eNumberOfSeats" name="NumberOfSeats" required style="width: 200px; background-color: white;"><br>
+
+            <label for="ArrivingHour" style="text-align: left; background-color: khaki;">Arriving Hour:</label>
+            <input type="time" id="eArrivingHour" name="ArrivingHour" required style="width: 200px; background-color: white;"><br>
+
+            <button type="submit" id="edit_flight">Update Flight</button>
+        </form>
+    </div>
+</div>
