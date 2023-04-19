@@ -1,5 +1,5 @@
-
 var socket = io()
+//const twitterUtil = require('../../twitterApi');
 
 function getAllFlights()
 {
@@ -10,7 +10,6 @@ function getAllFlights()
         success: function(data) {
             $.each(data, function(index, flight) {
                 var row = '<tr>' +
-
                     '<td>' + flight.Number + '</td>' +
                     '<td>' + flight.flightDate + '</td>' +
                     '<td>' + flight.hour + '</td>' +
@@ -48,49 +47,6 @@ function getFlightData(flightId){
     }
     return data
 }
-
-function setCurrentWeather(location, row) {
-    apiKey = 'EM33PYFYDJGMTW84K7VCK5C2Y'
-    const endpoint = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/weatherdata/forecast?aggregateHours=24&combinationMethod=aggregate&contentType=json&unitGroup=metric&locationMode=single&key=${apiKey}&dataElements=default&locations=${location}`;
-
-    return $.ajax({
-        url: endpoint,
-        dataType: 'json'
-    })
-        .done((data) => {
-            const weatherData = data.location.currentConditions;
-
-            const currentTemp = weatherData.temp;
-            console.log("temp: ", currentTemp)
-            row.find(".weather").text(currentTemp + "C")
-        })
-        .fail((jqXHR, textStatus, errorThrown) => {
-            console.log("fail: ")
-            console.error(`Error fetching weather data: ${textStatus} - ${errorThrown}`);
-            row.find(".weather").text("no data")
-        });
-}
-
-function UpdateWeather(flightId) {
-    const row = $("#flight-" + flightId);
-    const dest = row.find(".flight-destination").text();
-    setCurrentWeather(dest, row);
-}
-function UpdateAllWeather()
-{
-    const elements = $("tr");
-
-    // Iterate through the elements and extract their ids
-    const ids = elements.map(function () {
-        return this.id.split("-")[1];;
-    }).get(); // Convert the jQuery object to an array
-    ids.forEach(function(id){
-        UpdateWeather(id);
-    })
-    console.log(ids);
-
-}
-
 function UpdateRowData(flightId, newData){
     const row = $("#flight-" + flightId);
     row.find(".flight-number").text(newData.flightNumber);
@@ -103,7 +59,6 @@ function UpdateRowData(flightId, newData){
     row.find(".flight-arriving-date").text(newData.ArrivingDate);
     row.find(".flight-number-of-seats").text(newData.NumberOfSeats);
     row.find(".flight-arriving-hour").text(newData.ArrivingHour);
-    UpdateAllWeather()
 }
 function refreshFlightById(flightId){
     const row = $("#flight-" + flightId);
@@ -124,19 +79,17 @@ function refreshFlightById(flightId){
 }
 addNewFlight = (data)=>
 {
-                var row = '<tr> id = "flight-"+data._id '+
-                    '<td class = "flight-number">' + data.flightNumber + '</td>' +
-                    '<td class = "flight-date">' + data.flightDate + '</td>' +
-                    '<td class = "flight-hour">' + data.hour + '</td>' +
-                    '<td class = "flight-gate">' + data.Gate + '</td>' +
-                    '<td class = "flight-gate>' + data.Gate + '</td>' +
-                    '<td class = "flight-destination>' + data.Destination + '</td>' +
-                    '<td class = "flight-origin">' + data.Origin + '</td>' +
-                    '<td class = "flight-price">' + data.flightPrice + '</td>' +
-                    '<td class = "flight-arriving-date">' + data.ArrivingDate + '</td>' +
-                    '<td class = "flight-number-of-seats">' + data.NumberOfSeats + '</td>' +
-                    '<td class = "flight-arriving-hour">' + data.ArrivingHour + '</td>' +
-                    '<td class = "weather">0</td>'+
+                var row = '<tr>' +
+                    '<td>' + data.flightNumber + '</td>' +
+                    '<td>' + data.flightDate + '</td>' +
+                    '<td>' + data.hour + '</td>' +
+                    '<td>' + data.Gate + '</td>' +
+                    '<td>' + data.Destination + '</td>' +
+                    '<td>' + data.Origin + '</td>' +
+                    '<td>' + data.flightPrice + '</td>' +
+                    '<td>' + data.ArrivingDate + '</td>' +
+                    '<td>' + data.NumberOfSeats + '</td>' +
+                    '<td>' + data.ArrivingHour + '</td>' +
                     '<td><button class="editFlight" ' +
                     'data-flightid="' + data._id + '"' +
                     'data-flightnumber="' + data.flightNumber + '"' +
@@ -153,10 +106,8 @@ addNewFlight = (data)=>
                     '<button class="deleteFlight" data-flightid="' + data._id + '">Delete</button></td>' +
                     '</tr>';
                 $('#flightList').append(row);
-    UpdateAllWeather()
 }
 $(document).ready(function() {
-    UpdateAllWeather()
     //getAllFlights()
 
     $('#create_flight_form').on('submit', function(event) {
@@ -192,9 +143,8 @@ $(document).ready(function() {
                 //twitterUtil.tweet(data)
             })
             .fail(function(data) {
-                console.log("error creating flight: ", data.responseJSON)
-
-                showErrorPopup(data.responseJSON, 3000);
+                console.log("error creating flight")
+                $('#result').text('Error creating flight: ' + data.responseText);
             });
     });
 
@@ -230,7 +180,6 @@ $(document).ready(function() {
             })
             .fail(function(data) {
                 console.log("error updating flight")
-                showErrorPopup(data.responseJSON, 3000);
                 //$('#result').text('Error creating flight: ' + data.responseText);
             });
     });
@@ -358,7 +307,6 @@ $(document).ready(function() {
             })
             .fail(function(data) {
                 console.log("error ordering flight")
-                showErrorPopup(data.responseJSON, 3000);
                 //$('#result').text('Error creating flight: ' + data.responseText);
             });
     });
@@ -371,6 +319,14 @@ $(document).ready(function() {
     socket.on('flight-changed', function(data) {
         UpdateRowData(data._id, data)
     });
+
+    socket.on('new-flight', function(data) {
+        addNewFlight(data)
+    });
+    socket.on('delete-flight', function(data) {
+        UpdateRowData(data._id, data)
+    });
+
 });
 
 (function() {

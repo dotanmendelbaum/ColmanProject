@@ -9,13 +9,12 @@ module.exports = (io) => {
 
     router.route('/')
         .get(authorize, FlightsC.getAllFlightsPage)
-        .post(authorize, authAdmin, validateFlightData, FlightsC.createFlight);
+        .post(authorize, authAdmin,validateFlightData,  (req, res) => FlightsC.createFlight(req,res,io));
 
     router.route('/:flightID')
         .get(FlightsC.getFlight)
         .put(validateFlightData,  (req, res) => FlightsC.updateFlightById(req, res, io))
         .delete(FlightsC.deleteFlight);
-
 
     router.route('/book')
         .post(authorize , OrderC.createOrder);

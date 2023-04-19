@@ -7,12 +7,11 @@
 			background-size: cover;
 		}
 	</style>
-      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
   </head>
   <body>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
+<form>
 <section class="vh-100 gradient-custom">
     <div class="container py-0 h-30">
         <div class="row justify-content-center align-items-center h-100">
@@ -25,10 +24,10 @@
                         </svg>
                          <label style= "color:blue; font-size: 20px;"> EL</label>
                             <label style="color: rgb(126, 121, 121);font-size: 20px;"> AL  </label>
-                              <label style="font-size: 20px;"> AIRLINES</label>
+                              <label style="font-size: 20px;"> AIRLINES</labekl>
 
                     </div>
-                        <form id="register_form">
+                        <form>
                             <div class="row">
                                 <div class="col-md-6 mb-4">
                                     <div class="form-outline">
@@ -106,7 +105,7 @@
                             </div>
 
                             <div class="mt-4 pt-2" style="text-align: center;">
-                                <button type="submit" id="register">Register</button>
+                                <input class="btn btn-primary btn-lg" type="submit" value="Submit" />
                             </div>
                         </form>
                     </div>
@@ -115,28 +114,49 @@
         </div>
     </div>
 </section>
-    <%- include('../partials/errorMessage.ejs') %>
-
-  </body>
+</form>
+</body>
 </html>
 <script>
-    $(document).ready(function() {
-        const name = document.getElementById("fullName");
-        const email = document.getElementById("emailAddress");
-        const password = document.getElementById("password");
-        const id = document.getElementById("id");
-        const date = document.getElementById("birthdayDate");
-        const phone = document.getElementById("phoneNumber");
-        const pilot = document.getElementById("pilot");
-        const admin = document.getElementById("admin");
-        const client = document.getElementById("client");
-        const submitBtn = document.querySelector('.btn-primary');
+    // form loading animation
 
-        $('#register_form').on('submit', function (event) {
-            event.preventDefault(); // prevent default form submission behavior
-            console.log("subububiuhrni")
+   // const form = [...document.querySelector('.form').children];
+
+    /*form.forEach((item, i) => {
+        setTimeout(() => {
+            item.style.opacity = 1;
+        }, i*100);
+    })
+
+    window.onload = () => {
+        if(sessionStorage.name){
+            location.href = '/';
+        }
+    }*/
+
+    // form validation
+
+    //const name = document.querySelector('.name');
+    //const email = document.querySelector('.email');
+    //const password = document.querySelector('.password');
+    //const id = document.querySelector('.id');
+    //const date = document.querySelector('.date');
+    const name = document.getElementById("fullName");
+    const email = document.getElementById("emailAddress");
+    const password = document.getElementById("password");
+    const id = document.getElementById("id");
+    const date = document.getElementById("birthdayDate");
+    const phone = document.getElementById("phoneNumber");
+    const pilot = document.getElementById("pilot");
+    const admin = document.getElementById("admin");
+    const client = document.getElementById("client");
+    const submitBtn = document.querySelector('.btn-primary');
+
+
+
+        submitBtn.addEventListener('click', () => {
             let isAdmin = false;
-            if (admin.checked || pilot.checked) {
+            if(admin.checked || pilot.checked) {
                 isAdmin = true
             }
             console.log("date: " + date.value)
@@ -155,24 +175,31 @@
             })
                 .then(res => res.json())
                 .then(data => {
-                    console.log("data gfggg::", data)
                     validateData(data);
                 })
         })
 
 
-        const validateData = (data) => {
-            console.log("data::", data)
-            if (!data.name) {
-                showErrorPopup(data, 3000);
-            } else {
-                console.log("valid")
-                //sessionStorage.name = data.name;
-                //sessionStorage.email = data.email;
-                window.location.href = "/login"
-            }
+    const validateData = (data) => {
+        if(!data.name){
+            alertBox(data);
+        } else{
+            sessionStorage.name = data.name;
+            sessionStorage.email = data.email;
+            location.href = '/';
         }
-    })
+    }
+
+    const alertBox = (data) => {
+        const alertContainer = document.querySelector('.alert-box');
+        const alertMsg = document.querySelector('.alert');
+        alertMsg.innerHTML = data;
+
+        alertContainer.style.opacity = `100%`;
+        setTimeout(() => {
+            alertContainer.style.opacity = null;
+        }, 3000);
+    }
 </script>
 
 </body>

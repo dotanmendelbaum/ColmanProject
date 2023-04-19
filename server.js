@@ -24,8 +24,6 @@ const ordersRoute = require("./routes/orders")(io);
 const adminRoute = require("./routes/adminRoutes/admin")(io)
 const accountPreferencesRoute = require("./routes/accountPreferences")(io)
 const logoutRoute = require("./routes/users/logout")(io)
-const graphRoute = require("./routes/graphRoute")(io)
-
 
 app.set("view engine", "ejs");
 app.set("views", __dirname + "/views");
@@ -67,7 +65,6 @@ app.use("/orders", ordersRoute);
 app.use("/admin", adminRoute)
 app.use("/myaccount", accountPreferencesRoute)
 app.use("/logout", logoutRoute)
-app.use("/graphdata", graphRoute)
 app.get('*', function(req, res){
   res.render('notFound');
 });

@@ -2,6 +2,8 @@
 <html>
 <head>
     <title>All Flights</title>
+    <title>Add Map</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
     <script async src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=geocoding&callback=initMap" ></script>
@@ -35,7 +37,8 @@
     <%- include('../flights/editModal.ejs') %>
     <%- include('../partials/errorMessage.ejs') %>
 
-    <%- include('../partials/navBar.ejs') %>
+     
+<%- include('../partials/navBar.ejs') %>
 <div class="main-content" id="block_center" >
     <label style="font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; font-size:  50px ; color:bisque">
         <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" class="bi bi-airplane-engines" viewBox="0 0 16 16">
@@ -112,52 +115,145 @@
         </tbody>
     </table>
 </div>
+>
 
-<div class="row">
-    <div class="col">
-        <label style="background-color: bisque; font-size: 20px;">Flights Destinations</label>
-        <div id="map"></div>
-        <script>(g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})
-         ({key: "AIzaSyBSkfNxcG5hPUwz6NWGC0yhx8tcmDlXGEQ", v: "beta"});</script>
-         <style>
-        #map {
-        height: 400px; /* The height of the map */
-        width: 100%; /* the width of the map */
+<input type="text" id="search-input" placeholder="Search by destination">
+
+<script>
+  const searchInput = document.getElementById('search-input');
+
+  searchInput.addEventListener('input', function() {
+    const searchTerm = this.value.toLowerCase();
+    console.log("Search term:", searchTerm);
+    const tableRows = Array.from(document.querySelectorAll('table tbody tr'));
+    console.log("Table rows:", tableRows);
+
+    tableRows.forEach(function(row) {
+      const destination = row.querySelector('.flight-destination').textContent.toLowerCase();
+      console.log("Destination:", destination);
+      if (destination.includes(searchTerm)) {
+        row.style.display = '';
+      } else {
+        row.style.display = 'none';
+      }
+    });
+  });
+</script>
+
+</script>
+
+
+  <script>
+    const combo = document.getElementById('myCombo');
+  
+    combo.addEventListener('change', function() {
+      const selectedValue = combo.options[combo.selectedIndex].value;
+      const searchTerm = selectedValue;
+      const tableRows = document.querySelectorAll('table tbody tr');
+  
+      tableRows.forEach(function(row) {
+        const destination = row.querySelector('.flight-destination').textContent.toLowerCase();
+        if (destination.includes(searchTerm.toLowerCase())) {
+          row.style.display = '';
+        } else {
+          row.style.display = 'none';
         }
-        </style>
-        <script>
+      });
+    });
+  </script>
+  
+<h3>Flights Destinations</h3>
+<div id="map"></div>
 
-        // Initialize and add the map
-        let map;
-        
-        async function initMap() {
-        //  location of the destination
-        const position = { lat: 32.006185878587566, lng: 34.88549709487867 };
-        // Request needed libraries.
-        const { Map } = await google.maps.importLibrary("maps");
-        const { AdvancedMarkerView } = await google.maps.importLibrary("marker");
-        
-        // map
-        map = new Map(document.getElementById("map"), {
-        zoom: 4,
-        center: position,
-        mapId: "DEMO_MAP_ID",
-        });
-        
-        //  marker
-        const marker = new AdvancedMarkerView({
-        map: map,
-        position: position,
-        title: "Uluru",
-        });
-        }
-        
-        initMap();
-        </script>
-    </div>
+ <style>
+#map {
+height: 400px; /* The height of the map */
+width: 100%; /* the width of the map */
+}
+</style>
+<script>
+// Initialize and add the map
+let map;
+
+async function initMap( lat,lng) {
+//  location of the destination
+const position = { lat: 48.85521131770465, lng: 2.3497847492526858 };
+// Request needed libraries.
+const { Map } = await google.maps.importLibrary("maps");
+const { AdvancedMarkerView } = await google.maps.importLibrary("marker");
+
+// map
+const map = new google.maps.Map(document.getElementById("map"), {
+    zoom: 4,
+    center: position,
+  });
+
+//  marker
+ const marker= new google.maps.Marker({
+    position: position,
+    map,
+    title: "des",
+  });
+}
+initMap()
+
+const combo_ = document.getElementById('myCombo');
+var selectedValue_ = combo_.options[combo_.selectedIndex].value;
+if(selectedValue_=="France,Paris")
+{
+    const marker= new google.maps.Marker({
+    position: position,
+    map,
+    title: "des",
+  })
+}
+else if(selectedValue_=="Jordan")
+{
+
+}
+else if(selectedValue_=="Italy,Rome")
+{
+    position={lat: 41.90637618185527, lng: 12.500306679594116}
+    
+    const map = new google.maps.Map(document.getElementById("map"), {
+    zoom: 4,
+    center: position,
+  });
+    const marker= new google.maps.Marker({
+    position: position,
+    map,
+    title: "des2",
+  })
+   
+}
+else if(selectedValue_=="Thailand,Bangkok")
+{
+    const marker= new google.maps.Marker({
+    position: {lat: 13.74038938636481, lng: 100.49036538088797},
+    map,
+    title: "des3",
+  })
+}
+else if(selectedValue_=="Greece,Mykonos")
+{
+
+}
+else if(selectedValue_==">Budapest,Hungary")
+{
+
+}
+else if(selectedValue_=="Mexico,Puebla")
+{
+
+}
 
 
-</div>
+</script>
+<script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&callback=initMap&v=weekly"
+      defer
+    ></script>
+
 <script type="text/javascript" src="./flights.js"></script>
 </body>
 </html>
