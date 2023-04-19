@@ -67,12 +67,12 @@ addNewWorker = (data)=>
                     '<td>' + data.school + '</td>' +
                     '<td><button class="editWorker" ' +
                     'data-workerid="' + data.ID + '"' +
-                    'data-flightnumber="' + data.name + '"' +
-                    'data-flightdate="' + data.age + '"' +
-                    'data-hour="' + data.role + '"' +
-                    'data-gate="' + data.experience + '"' +
-                    'data-destination="' + data.started + '"' +
-                    'data-origin="' + data.school + '"' +
+                    'data-workername="' + data.name + '"' +
+                    'data-workerage="' + data.age + '"' +
+                    'data-workerrole="' + data.role + '"' +
+                    'data-workerexperience="' + data.experience + '"' +
+                    'data-workerstarted="' + data.started + '"' +
+                    'data-workerschool="' + data.school + '"' +
                     '>Edit</button>' +
                     '<button class="deleteWorker" data-workerid="' + data.ID + '">Delete</button></td>' +
                     '</tr>';

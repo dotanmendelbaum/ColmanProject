@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create a New Flight</title>
+</head>
+<body>
+<h1>Add a New Worker</h1>
+<form action="/workers" method="POST">
+    <%if(isAdmin){%>
+    <label for="ID">ID:</label>
+    <input type="number" id="ID" name="ID" required minlength="9" maxlength="9"><br>
+
+    <label for="name">name:</label>
+    <input type="text" id="name" name="name" required><br>
+
+    <label for="age">age:</label>
+    <input type="number" id="age" name="age" required><br>
+
+    <label for="role">role:</label>
+    <input type="text" id="role" name="role" required><br>
+
+    <label for="experience">experience:</label>
+    <input type="text" id="experience" name="experience" required><br>
+
+    <label for="started">started:</label>
+    <input type="date" id="started" name="started"  value="<%= new Date().toISOString().slice(0, 10) %> required><br>
+
+    <label for="school">school:</label>
+    <input type="text" id="school" name="school" required><br>
+
+    <button type="submit" href="../">Add Worker</button>
+    <%}%>
+    <title>you are not an admin</title>
+</form>
+<script>
+    $(document).ready(function() {
+        $('#createWorkerForm').submit(function(event) {
+            event.preventDefault(); // prevent default form submission behavior
+            var formData = {
+                ID: $('#ID').val(),
+                name: $('#name').val(),
+                age: $('#age').val(),
+                role: $('#role').val(),
+                experience: $('#experience').val(),
+                started: $('#started').val(),
+                school: $('#school').val(),
+            };
+
+            $.ajax({
+                type: 'POST',
+                url: '/workers/new',
+                data: formData,
+                dataType: 'json',
+                encode: true
+            })
+                .done(function(data) {
+                    $('#result').text('Worker created successfully with ID: ' + data.ID);
+                })
+                .fail(function(data) {
+                    $('#result').text('Error creating worker: ' + data.responseText);
+                });
+        });
+    });
+</script>
+</body>
+</html>
