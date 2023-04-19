@@ -9,7 +9,7 @@ module.exports = (io) => {
 
     router.route('/')
         .get(authorize, accountPreferences.getMyAccountPage)
-        .put(authorize, validateUserData, accountPreferences.updateUserData)
+        .put(authorize, validateUserData, (req, res) => accountPreferences.updateUserData(req, res, io))
 
     return router;
 }

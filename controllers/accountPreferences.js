@@ -1,5 +1,6 @@
 const users = require("../models/user")
 const service = require("../services/accountPreferences")
+
 getMyAccountPage = async (req, res) => {
     const usr = await users.findOne({email: req.session.user.email})
     if(usr)

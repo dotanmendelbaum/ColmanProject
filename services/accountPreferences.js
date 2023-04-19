@@ -1,9 +1,11 @@
 const users= require('../models/user')
 
-const validateUserData = async(res, req, next) =>{
-    const user = user.findOne({email: res.body.email})
-    if(req.body.email != req.session.user && user)
+const validateUserData = async(req, res, next) =>{
+    const user = await  users.findOne({email: req.body.email})
+    console.log(req.session.user.email)
+    if(req.body.email != req.session.user.email && user)
         return res.status(401).json("you naughty naughty! (in indian accent) why you trying to do harm?")
+    console.log("user data")
     next()
 }
 
@@ -19,11 +21,12 @@ const updateUserdata=async(req, res)=>
     }
 
     const updatedUser = await users.findOneAndUpdate({email: req.session.user.email}, update)
-    console.log("found flight for update. gate: ", update.Gate)
-    if(!updatedUser)
+    const currentUser = await users.findOne({email: req.session.user.email})
+    console.log("found user for update: ", updatedUser)
+    if(!currentUser)
         return null
 
-    return updatedUser
+    return currentUser
 }
 
 module.exports ={

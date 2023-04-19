@@ -210,6 +210,16 @@ $(document).ready(function() {
         $('#createModal').css("display", "block");
     });
 
+    $('.btn-close').on('click', function(){
+        $('#editModal').css("display", "none");
+        $('#createModal').css("display", "none");
+
+    });
+
+    $('#btn-create-close').on('click', function(){
+        $('#createModal').css("display", "none");
+    })
+
     socket.on('flight-changed', function(data) {
         UpdateRowData(data._id, data)
     });

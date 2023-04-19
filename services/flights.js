@@ -31,18 +31,6 @@ const updateFlightById=async(req, res)=>
     console.log("found flight for update. gate: ", update.Gate)
     if(!currentFlight)
         return null
-    /*// Update flight object with new schema
-    currentFlight.Gate = req.body.Gate;
-    currentFlight.flightNumber = req.body.flightNumber;
-    currentFlight.flightDate = req.body.flightDate;
-    currentFlight.hour = req.body.hour;
-    currentFlight.Destination = req.body.Destination;
-    currentFlight.Origin = req.body.Origin;
-    currentFlight.flightPrice = req.body.flightPrice;
-    currentFlight.ArrivingDate = req.body.ArrivingDate;
-    currentFlight.NumberOfSeats = req.body.NumberOfSeats;
-    currentFlight.ArrivingHour = req.body.ArrivingHour;
-    currentFlight.save()*/
 
     return currentFlight
 }
