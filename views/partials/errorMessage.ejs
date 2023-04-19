@@ -19,12 +19,15 @@
     }
 
     .popup-content {
+        opacity: 0;
         background-color: #f44336;
-        margin: 15% auto;
+        margin: -100px auto 0 auto;
         padding: 20px;
         border: 1px solid #888;
         width: 80%;
         text-align: center;
+        border-radius: 12px;
+        transition: margin 0.5s ease, opacity 0.5s ease;
     }
 
     .popup-close {
@@ -49,7 +52,15 @@
         errorPopupMessage.innerText = message;
         errorPopup.style.display = 'block';
         setTimeout(() => {
-            errorPopup.style.display = 'none';
+            errorPopup.querySelector('.popup-content').style.margin = '15% auto';
+            errorPopup.querySelector('.popup-content').style.opacity = '1';
+        }, 100);
+        setTimeout(() => {
+            errorPopup.querySelector('.popup-content').style.margin = '-100px auto 0 auto';
+            errorPopup.querySelector('.popup-content').style.opacity = '0';
+            setTimeout(() => {
+                errorPopup.style.display = 'none';
+            }, 500);
         }, duration);
     }
 </script>

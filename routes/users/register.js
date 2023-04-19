@@ -41,7 +41,7 @@ module.exports = (io) => {
                 await newUser.save();
                 //send the user to the login page:
 
-                return res.status(200).redirect('/login');
+                return res.status(200).json(newUser)
                 //res.redirect('/login')
 
             } catch (error) {
