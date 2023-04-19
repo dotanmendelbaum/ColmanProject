@@ -6,13 +6,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="/stylesheets/homePage.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
-      .graph-container {
-        width: 500px;
-        height: 500px;
-      }
-    </style>
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+
+   
 </head>
     <title>Airline Company</title>
     <style>
@@ -25,29 +21,7 @@
 </head>
 <body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
-
-
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
-    <div class="container-fluid">
-      <a class="navbar-brand"> <img src="https://www.easygo.co.il/clients/easygo/gallery/airlines/elal_756_500.jpg" style="width: 110px; height: 45px;"></a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
-          <li class="nav-item">
-            <a class="nav-link" aria-current="page" href="/flights">Flights</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Orders</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Members</a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
+<%- include('../partials/navBar.ejs') %>
   <header>
     <nav>
         <ul>
@@ -119,21 +93,6 @@
             </button>
           </div>
       </div>
-      &nbsp;	
-      &nbsp;	
-      &nbsp;	
-      &nbsp;	
-      &nbsp;	
-      &nbsp;	
-      &nbsp;	
-      &nbsp;	
-      &nbsp;	
-      &nbsp;	
-      &nbsp;	
-      &nbsp;	
-      &nbsp;	
-      &nbsp;	
-      &nbsp;
       <div class="col">
         <b><h4 style="font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-airplane-fill" viewBox="0 0 16 16">
             <path d="M6.428 1.151C6.708.591 7.213 0 8 0s1.292.592 1.572 1.151C9.861 1.73 10 2.431 10 3v3.691l5.17 2.585a1.5 1.5 0 0 1 .83 1.342V12a.5.5 0 0 1-.582.493l-5.507-.918-.375 2.253 1.318 1.318A.5.5 0 0 1 10.5 16h-5a.5.5 0 0 1-.354-.854l1.319-1.318-.376-2.253-5.507.918A.5.5 0 0 1 0 12v-1.382a1.5 1.5 0 0 1 .83-1.342L6 6.691V3c0-.568.14-1.271.428-1.849Z"/>
@@ -141,21 +100,6 @@
           <label>click here for watching</label>
         <iframe width="250" height="250" src="https://www.youtube.com/embed/4L51lRjDgpE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
       </div>
-      &nbsp;	
-      &nbsp;	
-      &nbsp;	
-      &nbsp;	
-      &nbsp;	
-      &nbsp;	
-      &nbsp;	
-      &nbsp;	
-      &nbsp;	
-      &nbsp;	
-      &nbsp;	
-      &nbsp;	
-      &nbsp;	
-      &nbsp;	
-      &nbsp;
       <div class="col" style="text-align: center;">
         <b><h4 style="font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-airplane-fill" viewBox="0 0 16 16">
             <path d="M6.428 1.151C6.708.591 7.213 0 8 0s1.292.592 1.572 1.151C9.861 1.73 10 2.431 10 3v3.691l5.17 2.585a1.5 1.5 0 0 1 .83 1.342V12a.5.5 0 0 1-.582.493l-5.507-.918-.375 2.253 1.318 1.318A.5.5 0 0 1 10.5 16h-5a.5.5 0 0 1-.354-.854l1.319-1.318-.376-2.253-5.507.918A.5.5 0 0 1 0 12v-1.382a1.5 1.5 0 0 1 .83-1.342L6 6.691V3c0-.568.14-1.271.428-1.849Z"/>
@@ -163,8 +107,29 @@
           <label> for more information about the company: </label>
 
           <div class="card shadow-2-strong card-registration" style="text-align: center; border-radius: 0px ;background-size: cover; background-image: url(https://images1.calcalist.co.il/PicServer3/2018/08/23/841870/shutterstock_553131187_lm.jpg); background-color:bisque; width: 250PX; height: 250px;  ">
-           <b> <p style="font-size: 12px; color:bla"> El Al Airlines, commonly referred to as El Al, is the flag carrier of Israel. Founded in 1948, El Al is headquartered in Tel Aviv and operates flights to over 50 destinations worldwide, including Europe, North America, Asia, Africa, and the Middle East.
-              El Al is known for its high level of security measures and has a reputation as one of the world's most secure airlines. Its security protocols include armed guards on flights, reinforced cockpit doors, and extensive baggage screening.</p></b>
+           <!-- Button trigger modal -->
+<button type="button" class="btn btn-outline-light"  style="color: black; size: 20 ;" data-bs-toggle="modal" data-bs-target="#exampleModal" >
+  click here 
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">The start of empire</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <b> <p style="font-size: 12px; color:bla"> El Al Airlines, commonly referred to as El Al, is the flag carrier of Israel. Founded in 1948, El Al is headquartered in Tel Aviv and operates flights to over 50 destinations worldwide, including Europe, North America, Asia, Africa, and the Middle East.
+          El Al is known for its high level of security measures and has a reputation as one of the world's most secure airlines. Its security protocols include armed guards on flights, reinforced cockpit doors, and extensive baggage screening.</p></b>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
       </div>
       </div>
       <div class="col" style=>
@@ -172,53 +137,40 @@
           <b><h4 style="font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-airplane-fill" viewBox="0 0 16 16">
             <path d="M6.428 1.151C6.708.591 7.213 0 8 0s1.292.592 1.572 1.151C9.861 1.73 10 2.431 10 3v3.691l5.17 2.585a1.5 1.5 0 0 1 .83 1.342V12a.5.5 0 0 1-.582.493l-5.507-.918-.375 2.253 1.318 1.318A.5.5 0 0 1 10.5 16h-5a.5.5 0 0 1-.354-.854l1.319-1.318-.376-2.253-5.507.918A.5.5 0 0 1 0 12v-1.382a1.5 1.5 0 0 1 .83-1.342L6 6.691V3c0-.568.14-1.271.428-1.849Z"/>
           </svg>  Flights Graph </h4></b>
-          <div class="graph-container">
-            <canvas id="myChart"></canvas>
-          </div>
           <script>
-var ctx = document.getElementById('myChart').getContext('2d');
-var myChart = new Chart(ctx, {
-    type: 'bar',
-    data: {
-     
-        labels: ['Novembar', 'December', 'Janurary', 'Feburary', 'March', 'april'],
-        datasets: [{
-            label: 'number of flight  in the past 6 months',
-            data: [52233100,30031230, 39231283, 42425213, 62132292, 32321423],
-            backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)'
-            ],
-            borderColor: [
-                'rgba(255, 99, 132, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)'
-            ],
-            borderWidth: 1
-        }]
-    },
-    options: {
-        scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero: true
-                }
-            }]
-        }
-    }
-});
+            let replay;
 
+const svg = d3.create("svg")
+    .attr("viewBox", [0, 0, width, height]);
+
+const updateBars = bars(svg);
+const updateAxis = axis(svg);
+const updateLabels = labels(svg);
+const updateTicker = ticker(svg);
+
+document.body.appendChild(svg.node());
+
+for (const keyframe of keyframes) {
+  const transition = svg.transition()
+      .duration(duration)
+      .ease(d3.easeLinear);
+
+  // Extract the top bar’s value.
+  x.domain([0, keyframe[1][0].value]);
+
+  updateAxis(keyframe, transition);
+  updateBars(keyframe, transition);
+  updateLabels(keyframe, transition);
+  updateTicker(keyframe, transition);
+
+  invalidation.then(() => svg.interrupt());
+  await transition.end();
+}
           </script>
-          <script type="text/javascript" src="GRAPH.js"> </script>
-        <%}%>
-      </div>	
+         
+
+         <%}%>
+ </div>	
       &nbsp;
       &nbsp;
       <div class="col">

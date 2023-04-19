@@ -1,7 +1,7 @@
 const flight= require('../models/flights')
-const createFlight= async(flightID, flightDate,hour,Gate, Destination, Origin,flightPrice,ArrivingDate,NumberOfSeats, ArrivingHour)=>
+const createFlight= async(flightNumber, flightDate,hour,Gate, Destination, Origin,flightPrice,ArrivingDate,NumberOfSeats, ArrivingHour)=>
 {
-    const Flight= new flight({flightID:flightID,flightDate:flightDate,hour:hour,Gate:Gate,Destination:Destination,Origin:Origin,flightPrice:flightPrice, ArrivingDate:ArrivingDate,NumberOfSeats:NumberOfSeats,ArrivingHour:ArrivingHour  })
+    const Flight= new flight({flightNumber:flightNumber,flightDate:flightDate,hour:hour,Gate:Gate,Destination:Destination,Origin:Origin,flightPrice:flightPrice, ArrivingDate:ArrivingDate,NumberOfSeats:NumberOfSeats,ArrivingHour:ArrivingHour  })
     return await Flight.save();
 }
 const getFlightById= async(flightID)=>
@@ -14,16 +14,30 @@ const getFlights= async()=>
 }
 const updateFlightById=async(req, res)=>
 {
-    const currentFlight = await getFlightById(req.params.flightID)
+    const update = {
+        flightNumber: req.body.flightNumber,
+        flightDate: req.body.flightDate,
+        hour: req.body.hour,
+        Gate: req.body.Gate,
+        Destination: req.body.Destination,
+        Origin: req.body.Origin,
+        flightPrice: req.body.flightPrice,
+        ArrivingDate: req.body.ArrivingDate,
+        NumberOfSeats: req.body.NumberOfSeats,
+        ArrivingHour: req.body.ArrivingHour
+    }
+
+    const currentFlight = await flight.findByIdAndUpdate(req.params.flightID, update)
+    console.log("found flight for update. gate: ", update.Gate)
     if(!currentFlight)
         return null
-    Object.assign(currentFlight, res.body)
 
+    return currentFlight
 }
 function validateFlightData(req, res, next)
 {
     // Check that all fields are present and not empty
-    if (!req.body.flightID ||
+    if (!req.body.flightNumber ||
         !req.body.flightDate ||
         !req.body.hour ||
         !req.body.Gate ||
@@ -55,6 +69,7 @@ function validateFlightData(req, res, next)
     }
 
     // If all validation passes continue to the next function
+    console.log("flight validated")
     return next()
 }
 

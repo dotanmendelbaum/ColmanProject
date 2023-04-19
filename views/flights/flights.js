@@ -1,3 +1,4 @@
+var socket = io()
 function getAllFlights()
 {
     $.ajax({
@@ -7,7 +8,7 @@ function getAllFlights()
         success: function(data) {
             $.each(data, function(index, flight) {
                 var row = '<tr>' +
-                    '<td>' + flight.flightID + '</td>' +
+                    '<td>' + flight.Number + '</td>' +
                     '<td>' + flight.flightDate + '</td>' +
                     '<td>' + flight.hour + '</td>' +
                     '<td>' + flight.Gate + '</td>' +
@@ -29,10 +30,40 @@ function getAllFlights()
     });
 }
 
+function UpdateRowData(flightId, newData){
+    const row = $("#flight-" + flightId);
+    row.find(".flight-number").text(newData.flightNumber);
+    row.find(".flight-date").text(newData.flightDate);
+    row.find(".flight-hour").text(newData.hour);
+    row.find(".flight-gate").text(newData.Gate);
+    row.find(".flight-destination").text(newData.Destination);
+    row.find(".flight-origin").text(newData.Origin);
+    row.find(".flight-price").text(newData.flightPrice);
+    row.find(".flight-arriving-date").text(newData.ArrivingDate);
+    row.find(".flight-number-of-seats").text(newData.NumberOfSeats);
+    row.find(".flight-arriving-hour").text(newData.ArrivingHour);
+}
+function refreshFlightById(flightId){
+    const row = $("#flight-" + flightId);
+    if(row){
+        //request the refreshed flight data from the server:
+        $.ajax({
+            type: 'GET',
+            url: '/flights/' + flightId,
+            encode: true
+        })
+            .done(function(data) {
+                UpdateRowData(row, data)
+            })
+            .fail(function(data) {
+                $('#result').text('Error creating flight: ' + data.responseText);
+            });
+    }
+}
 addNewFlight = (data)=>
 {
                 var row = '<tr>' +
-                    '<td>' + data.flightID + '</td>' +
+                    '<td>' + data.flightNumber + '</td>' +
                     '<td>' + data.flightDate + '</td>' +
                     '<td>' + data.hour + '</td>' +
                     '<td>' + data.Gate + '</td>' +
@@ -44,7 +75,7 @@ addNewFlight = (data)=>
                     '<td>' + data.ArrivingHour + '</td>' +
                     '<td><button class="editFlight" ' +
                     'data-flightid="' + data._id + '"' +
-                    'data-flightactualid="' + data.flightID + '"' +
+                    'data-flightnumber="' + data.flightNumber + '"' +
                     'data-flightdate="' + data.flightDate + '"' +
                     'data-hour="' + data.hour + '"' +
                     'data-gate="' + data.Gate + '"' +
@@ -60,14 +91,14 @@ addNewFlight = (data)=>
                 $('#flightList').append(row);
 }
 $(document).ready(function() {
-    getAllFlights()
+    //getAllFlights()
 
     $('#create_flight_form').on('submit', function(event) {
         event.preventDefault(); // prevent default form submission behavior
         console.log("create")
 
         var formData = {
-            flightID: $('#flightID').val(),
+            flightNumber: $('#flightNumber').val(),
             flightDate: $('#flightDate').val(),
             hour: $('#hour').val(),
             Gate: $('#Gate').val(),
@@ -78,6 +109,7 @@ $(document).ready(function() {
             NumberOfSeats: $('#NumberOfSeats').val(),
             ArrivingHour: $('#ArrivingHour').val()
         };
+        console.log("flight number: ", formData.flightNumber)
 
         $.ajax({
             type: 'POST',
@@ -100,19 +132,20 @@ $(document).ready(function() {
 
     $('#edit_flight_form').on('submit', function(event) {
         event.preventDefault(); // prevent default form submission behavior
-        console.log("create")
+        console.log("edit")
 
         var formData = {
-            flightID: $('#flightID').val(),
-            flightDate: $('#flightDate').val(),
-            hour: $('#hour').val(),
-            Gate: $('#Gate').val(),
-            Destination: $('#Destination').val(),
-            Origin: $('#Origin').val(),
-            flightPrice: $('#flightPrice').val(),
-            ArrivingDate: $('#ArrivingDate').val(),
-            NumberOfSeats: $('#NumberOfSeats').val(),
-            ArrivingHour: $('#ArrivingHour').val()
+            flightID: $('#eflightID').val(),
+            flightNumber: $('#eflightNumber').val(),
+            flightDate: $('#eflightDate').val(),
+            hour: $('#ehour').val(),
+            Gate: $('#eGate').val(),
+            Destination: $('#eDestination').val(),
+            Origin: $('#eOrigin').val(),
+            flightPrice: $('#eflightPrice').val(),
+            ArrivingDate: $('#eArrivingDate').val(),
+            NumberOfSeats: $('#eNumberOfSeats').val(),
+            ArrivingHour: $('#eArrivingHour').val()
         };
 
         $.ajax({
@@ -123,10 +156,9 @@ $(document).ready(function() {
             encode: true
         })
             .done(function(data) {
-                console.log("flight updated successfully")
+                console.log("flight updated Successfully")
                 $('#editModal').css("display", "none");
-                console.log(data)
-                addNewFlight(data)
+                UpdateRowData(data._id, data)
             })
             .fail(function(data) {
                 console.log("error updating flight")
@@ -134,11 +166,14 @@ $(document).ready(function() {
             });
     });
 
+
     $('#flightList').on('click', '.editFlight', function() {
         //var flightID = $(this).data('flightid');
         //('#flightDate').val()
+        console.log("flightid: ", $(this).data('flightid'))
             $('#editModal').css("display", "block");
-            $('#eflightID').val($(this).data('flightactualid'));
+            $('#eflightID').val($(this).data('flightid'));
+            $('#eflightNumber').val($(this).data('flightnumber'));
             $('#eflightDate').val(new Date($(this).data('flightdate')).toISOString().substr(0, 10));
             $('#ehour').val($(this).data('hour'));
             $('#eGate').val($(this).data('gate'));
@@ -173,5 +208,19 @@ $(document).ready(function() {
 
     $('#createFlightBtn').on('click', function() {
         $('#createModal').css("display", "block");
+    });
+
+    $('.btn-close').on('click', function(){
+        $('#editModal').css("display", "none");
+        $('#createModal').css("display", "none");
+
+    });
+
+    $('#btn-create-close').on('click', function(){
+        $('#createModal').css("display", "none");
+    })
+
+    socket.on('flight-changed', function(data) {
+        UpdateRowData(data._id, data)
     });
 });

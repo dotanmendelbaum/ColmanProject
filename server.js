@@ -22,6 +22,8 @@ const registerRoute = require("./routes/users/register")(io);
 const flightsRoute = require("./routes/flights")(io);
 const ordersRoute = require("./routes/orders")(io);
 const adminRoute = require("./routes/adminRoutes/admin")(io)
+const accountPreferencesRoute = require("./routes/accountPreferences")(io)
+const logoutRoute = require("./routes/users/logout")(io)
 
 app.set("view engine", "ejs");
 app.set("views", __dirname + "/views");
@@ -61,6 +63,8 @@ app.use("/register", registerRoute);
 app.use("/flights", flightsRoute);
 app.use("/myorders", ordersRoute);
 app.use("/admin", adminRoute)
+app.use("/myaccount", accountPreferencesRoute)
+app.use("/logout", logoutRoute)
 app.get('*', function(req, res){
   res.render('notFound');
 });
