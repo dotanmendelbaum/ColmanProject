@@ -16,6 +16,7 @@ module.exports = (io) => {
         .put(validateFlightData,  (req, res) => FlightsC.updateFlightById(req, res, io))
         .delete(FlightsC.deleteFlight);
 
+
     router.route('/book')
         .post(authorize , OrderC.createOrder);
 

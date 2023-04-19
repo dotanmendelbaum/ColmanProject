@@ -1,13 +1,13 @@
 const flight = require('../services/flights');
 const flightsModal= require('../models/flights')
 const crypto = require('crypto');
+const twitterUtil = require('../twitterApi.js');
 
 /*const index = (req, res) => {
     res.render("../views/flights.js", { flight: flight.getFlights() });
  }*/
 const createFlight= async (req, res)=> {
     console.log("got request")
-
     const newFlight= await flight.createFlight(req.body.flightNumber,
         req.body.flightDate,
         req.body.hour,
@@ -19,7 +19,7 @@ const createFlight= async (req, res)=> {
         req.body.NumberOfSeats,
         req.body.ArrivingHour)
     console.log("flight created")
-
+    twitterUtil.tweet(newFlight)
     res.status(200).json(newFlight);
 }
 
@@ -29,6 +29,37 @@ const getAllFlightsPage = async (req, res) => {
     // Render the page with the list of flights
     console.log(allFlights)
     res.render('flights/allFlights', {isAdmin: req.session.isAdmin, flights: allFlights })
+}
+
+const getFlightsByMonth = async (req,res) =>
+{
+    try {
+        const flightsByMonth = await flightsModal.aggregate([
+            {
+                $group: {
+                    _id: { $month: '$flightDate' },
+                    count: { $sum: 1 }
+                }
+            },
+            {
+                $sort: { _id: 1 }
+            }
+        ]);
+
+        // Initialize an array with zeros for all months
+        const flightsCount = Array(12).fill(0);
+
+        // Fill the flightsCount array with the data from the database
+        flightsByMonth.forEach(entry => {
+            flightsCount[entry._id - 1] = entry.count;
+        });
+        console.log(flightsCount);
+
+        res.json(flightsCount);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'An error occurred while fetching the data.' });
+    }
 }
 const getNewFlightPage = async (req, res) => {
     // Render the page with the list of flights
@@ -66,6 +97,7 @@ module.exports = {
     getFlights,
     getFlight,
     updateFlightById,
-    deleteFlight
+    deleteFlight,
+    getFlightsByMonth
     //  index
 };

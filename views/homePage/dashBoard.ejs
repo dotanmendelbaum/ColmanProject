@@ -7,9 +7,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="/stylesheets/homePage.css">
     <script src="https://d3js.org/d3.v6.min.js"></script>
+      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-   
-</head>
+
+  </head>
     <title>Airline Company</title>
     <style>
     body {
@@ -132,60 +133,150 @@
 </div>
       </div>
       </div>
-      <div class="col" style=>
+      <div class="row" style=>
         <%if(isAdmin){%>
           <b><h4 style="font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-airplane-fill" viewBox="0 0 16 16">
             <path d="M6.428 1.151C6.708.591 7.213 0 8 0s1.292.592 1.572 1.151C9.861 1.73 10 2.431 10 3v3.691l5.17 2.585a1.5 1.5 0 0 1 .83 1.342V12a.5.5 0 0 1-.582.493l-5.507-.918-.375 2.253 1.318 1.318A.5.5 0 0 1 10.5 16h-5a.5.5 0 0 1-.354-.854l1.319-1.318-.376-2.253-5.507.918A.5.5 0 0 1 0 12v-1.382a1.5 1.5 0 0 1 .83-1.342L6 6.691V3c0-.568.14-1.271.428-1.849Z"/>
           </svg>  Flights Graph </h4></b>
-          <script>
-            let replay;
+              <div class="col" id="chartf"></div>
+              <div class="col" id="chartu"></div>
+              <script>
 
-const svg = d3.create("svg")
-    .attr("viewBox", [0, 0, width, height]);
+                  async function fetchFlightsByMonth() {
+                      $.ajax({
+                          type: 'GET',
+                          url: '/graphdata/flightsbymonth',
+                          encode: true
+                      })
+                          .done(function(data) {
 
-const updateBars = bars(svg);
-const updateAxis = axis(svg);
-const updateLabels = labels(svg);
-const updateTicker = ticker(svg);
+                              return drawFlightsChart(data.map((count, index) => ({ month: index + 1, count })))
+                          })
+                          .fail(function(data) {
+                              console.error('Error fetching flights by month:');
+                          });
+                  }
+                  function getMonthName(monthNumber) {
+                      const monthNames = [
+                          'January', 'February', 'March', 'April', 'May', 'June',
+                          'July', 'August', 'September', 'October', 'November', 'December'
+                      ];
+                      return monthNames[monthNumber - 1];
+                  }
 
-document.body.appendChild(svg.node());
+                  async function drawFlightsChart(data) {
+                      const margin = { top: 20, right: 20, bottom: 30, left: 40 };
+                      const width = 500 - margin.left - margin.right;
+                      const height = 500 - margin.top - margin.bottom;
 
-for (const keyframe of keyframes) {
-  const transition = svg.transition()
-      .duration(duration)
-      .ease(d3.easeLinear);
+                      const x = d3.scaleBand().rangeRound([0, width]).padding(0.1);
+                      const y = d3.scaleLinear().rangeRound([height, 0]);
 
-  // Extract the top bar’s value.
-  x.domain([0, keyframe[1][0].value]);
+                      const svg = d3.select('#chartf')
+                          .append('svg')
+                          .attr('width', width + margin.left + margin.right)
+                          .attr('height', height + margin.top + margin.bottom)
+                          .append('g')
+                          .attr('transform', `translate(${margin.left},${margin.top})`);
 
-  updateAxis(keyframe, transition);
-  updateBars(keyframe, transition);
-  updateLabels(keyframe, transition);
-  updateTicker(keyframe, transition);
+                      x.domain(data.map(d => d.month));
+                      y.domain([0, d3.max(data, d => d.count)]);
 
-  invalidation.then(() => svg.interrupt());
-  await transition.end();
-}
-          </script>
-         
+                      const xAxis = d3.axisBottom(x)
+                          .tickFormat(d => getMonthName(d));
 
-         <%}%>
- </div>	
-      &nbsp;
-      &nbsp;
-      <div class="col">
-        <b><h4 style="font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-airplane-fill" viewBox="0 0 16 16">
-            <path d="M6.428 1.151C6.708.591 7.213 0 8 0s1.292.592 1.572 1.151C9.861 1.73 10 2.431 10 3v3.691l5.17 2.585a1.5 1.5 0 0 1 .83 1.342V12a.5.5 0 0 1-.582.493l-5.507-.918-.375 2.253 1.318 1.318A.5.5 0 0 1 10.5 16h-5a.5.5 0 0 1-.354-.854l1.319-1.318-.376-2.253-5.507.918A.5.5 0 0 1 0 12v-1.382a1.5 1.5 0 0 1 .83-1.342L6 6.691V3c0-.568.14-1.271.428-1.849Z"/>
-          </svg> THANK YOU FOR FLYING WITH US </h4></b>
-       <button type="button" class="btn btn-outline-light">
-        <a class="flights" aria-current="page" href="/login" style="color:antiquewhite;"> back to login</a></button>
-      </div>
+                      svg.append('g')
+                          .attr('transform', `translate(0,${height})`)
+                          .call(d3.axisBottom(x))
+                            .call(xAxis);
+
+                      svg.append('g')
+                          .call(d3.axisLeft(y));
+
+                      const colorScale = d3.scaleOrdinal(d3.schemeCategory10);
+
+                      svg.selectAll('.bar')
+                          .data(data)
+                          .enter()
+                          .append('rect')
+                          .attr('class', 'bar')
+                          .attr('x', d => x(d.month))
+                          .attr('y', d => y(d.count))
+                          .attr('width', x.bandwidth())
+                          .attr('height', d => height - y(d.count))
+                          .attr('fill', (d, i) => colorScale(i));
+                  }
+
+                  async function fetchUsersByAge() {
+                      $.ajax({
+                          type: 'GET',
+                          url: '/graphdata/usersbyage',
+                          encode: true
+                      })
+                          .done(function(data) {
+                              drawUsersChart(data)
+                          })
+                          .fail(function(data) {
+                              console.error('Error fetching flights by month:');
+                          });
+                  }
+
+                  async function drawUsersChart(data) {
+                      const chartMargin = { top: 20, right: 20, bottom: 30, left: 40 };
+                      const chartWidth = 500 - chartMargin.left - chartMargin.right;
+                      const chartHeight = 500 - chartMargin.top - chartMargin.bottom;
+
+                      const chartContainer = d3.select('#chartu');
+
+                      const svg = chartContainer.append('svg')
+                          .attr('width', chartWidth + chartMargin.left + chartMargin.right)
+                          .attr('height', chartHeight + chartMargin.top + chartMargin.bottom);
+
+                      const chart = svg.append('g')
+                          .attr('transform', `translate(${chartMargin.left}, ${chartMargin.top})`);
+
+                      // Create the x-axis scale
+                      const xScale = d3.scaleBand()
+                          .domain(data.map(d => d._id))
+                          .range([0, chartWidth])
+                          .padding(0.1);
+
+                      // Create the y-axis scale
+                      const yScale = d3.scaleLinear()
+                          .domain([0, d3.max(data, d => d.count)])
+                          .range([chartHeight, 0]);
+
+                      // Create and add the x-axis
+                      const xAxis = d3.axisBottom(xScale);
+                      chart.append('g')
+                          .attr('class', 'axis')
+                          .attr('transform', `translate(0, ${chartHeight})`)
+                          .call(xAxis);
+
+                      // Create and add the y-axis
+                      const yAxis = d3.axisLeft(yScale);
+                      chart.append('g')
+                          .attr('class', 'axis')
+                          .call(yAxis);
+
+                      // Create and add the bars
+                      chart.selectAll('.bar')
+                          .data(data)
+                          .enter()
+                          .append('rect')
+                          .attr('class', 'bar')
+                          .attr('x', d => xScale(d._id))
+                          .attr('y', d => yScale(d.count))
+                          .attr('width', xScale.bandwidth())
+                          .attr('height', d => chartHeight - yScale(d.count));
+                  }
+                  fetchFlightsByMonth();
+                  fetchUsersByAge();
+              </script>
+          <%}%>
+ </div>
     </div>
   </div>
-
-  
-<script>
-</script>
 </body>
 </html>
 

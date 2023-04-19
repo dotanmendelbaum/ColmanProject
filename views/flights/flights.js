@@ -1,5 +1,5 @@
+
 var socket = io()
-//const twitterUtil = require('../../twitterApi');
 
 function getAllFlights()
 {
@@ -144,7 +144,7 @@ $(document).ready(function() {
             })
             .fail(function(data) {
                 console.log("error creating flight")
-                $('#result').text('Error creating flight: ' + data.responseText);
+                showErrorPopup(data, 3000);
             });
     });
 
