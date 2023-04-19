@@ -1,8 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const Player = require("../../models/user");
 const User = require("../../models/user");
-//All Players Route
 
 module.exports = (io) => {
 
