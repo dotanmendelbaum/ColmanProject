@@ -1,5 +1,6 @@
 const Twit = require("twit");
 const dotenv = require("dotenv");
+const fli = require("./views/flights/flights")
 dotenv.config();
 
 // ...
@@ -13,8 +14,8 @@ const T = new Twit({
 
   // ..
 
-const tweet = () => {
-    const text = "Hey!";
+const tweet = (data) => {
+    const text = "A new flight from " + data.Origin + " to " + data.Destination +" on "+ data.flightDate +" for " + data.flightPrice + " just added" ;
   
     const onFinish = (err, reply) => {
       if (err) {
@@ -27,5 +28,8 @@ const tweet = () => {
     T.post("statuses/update", { status: text }, onFinish);
   };
   
-  tweet();
+  tweet(fli.data);
 
+  module.exports = {
+    tweet
+  };

@@ -1,4 +1,6 @@
 var socket = io()
+const twitterUtil = require('../../twitterApi');
+
 function getAllFlights()
 {
     $.ajax({
@@ -81,7 +83,7 @@ addNewFlight = (data)=>
                     'data-gate="' + data.Gate + '"' +
                     'data-destination="' + data.Destination + '"' +
                     'data-origin="' + data.Origin + '"' +
-                    'data-price="' + data.Price + '"' +
+                    'data-price="' + data.flightPrice + '"' +
                     'data-arrivingdate="' + data.ArrivingDate + '"' +
                     'data-numberofseats="' + data.NumberOfSeats + '"' +
                     'data-arrivinghour="' + data.ArrivingHour + '"' +
@@ -123,6 +125,7 @@ $(document).ready(function() {
                 $('#createModal').css("display", "none");
                 console.log(data)
                 addNewFlight(data)
+                twitterUtil.tweet(data)
             })
             .fail(function(data) {
                 console.log("error creating flight")
@@ -224,3 +227,6 @@ $(document).ready(function() {
         UpdateRowData(data._id, data)
     });
 });
+module.exports = {
+    data
+  };
