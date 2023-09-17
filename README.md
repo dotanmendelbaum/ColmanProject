@@ -1,9 +1,1 @@
-Airline website
-
-to install all of the dependencies, first run: 
-
-npm i 
-
-To launch the server while develeping run:
-
-npm run devStart
+Project for the introductory web application development course. This project was halted before reaching full completion.
